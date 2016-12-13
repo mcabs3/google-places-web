@@ -113,4 +113,4 @@ class ReactNativeGooglePlacesWeb {
   }
 }
 
-module.exports = ReactNativeGooglePlacesWeb;
+export default ReactNativeGooglePlacesWeb;

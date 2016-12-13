@@ -2,6 +2,7 @@
   "name": "react-native-google-places-web",
   "version": "1.0.0",
   "description": "A wrapper for the Google Places web javascript API.",
+  "repository": "https://github.com/mcabs3/react-native-google-places.git",
   "main": "index.js",
   "scripts": {
     "test": "jest",

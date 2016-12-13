@@ -1,0 +1,18 @@
+{
+  "name": "react-native-google-places",
+  "version": "1.0.0",
+  "description": "A wrapper for the Google Places web javascript API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "Google",
+    "Places",
+    "React",
+    "React",
+    "Native"
+  ],
+  "author": "Miguel Caballero",
+  "license": "ISC"
+}

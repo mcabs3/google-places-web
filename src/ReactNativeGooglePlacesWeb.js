@@ -1,14 +1,15 @@
 'use strict';
 const GOOGLE_PLACES_API = 'https://maps.googleapis.com/maps/api/place/';
 
-class ReactNativeGooglePlaces {
-
-  _apiKey = null;
-  _logEvents = false;
+class ReactNativeGooglePlacesWeb {
 
   constructor(opts) {
-    this._apiKey = opts.apiKey;
-    this._logEvents = opts.log;
+    if (opts) {
+      this._apiKey = opts.apiKey;
+      this._logEvents = opts.log;
+    } else {
+      this._apiKey = null;
+    }
     this._log(`API KEY`, this._apiKey);
   }
 
@@ -112,4 +113,4 @@ class ReactNativeGooglePlaces {
   }
 }
 
-module.exports = ReactNativeGooglePlaces;
+module.exports = ReactNativeGooglePlacesWeb;

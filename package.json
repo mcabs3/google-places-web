@@ -1,18 +1,35 @@
 {
-  "name": "react-native-google-places",
+  "name": "react-native-google-places-web",
   "version": "1.0.0",
   "description": "A wrapper for the Google Places web javascript API.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "compile": "babel -d lib/ src/",
+    "prepublish": "npm run compile"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "jest": {
+    "verbose": true,
+    "modulePathIgnorePatterns": []
   },
   "keywords": [
     "Google",
     "Places",
     "React",
-    "React",
-    "Native"
+    "React Native"
   ],
   "author": "Miguel Caballero",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "6.5.2",
+    "babel-cli": "^6.18.0",
+    "babel-jest": "17.0.2",
+    "babel-preset-es2015": "^6.18.0",
+    "jest": "17.0.3"
+  }
 }

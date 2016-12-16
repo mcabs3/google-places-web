@@ -1,2 +1,2 @@
-import ReactNativeGooglePlacesWeb from './src/ReactNativeGooglePlacesWeb';
-export default ReactNativeGooglePlacesWeb;
+import GooglePlaces from './src/GooglePlaces';
+export default GooglePlaces;

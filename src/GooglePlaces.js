@@ -1,17 +1,5 @@
 'use strict';
-const GOOGLE_PLACES_API = 'https://maps.googleapis.com/maps/api/place/';
-
-
-export const PARAMS_MAP = {
-  DETAILS: {
-    required: ['placeId'],
-    optional: []
-  },
-  AUTOCOMPLETE: {
-    required: [],
-    optional: []
-  }
-};
+import {GOOGLE_PLACES_API, PARAMS} from './GoogleConstants';
 
 /**
  * Parse through a params object creating URI Components
@@ -27,14 +15,14 @@ export function permitParams({requiredKeys, optionalKeys}, params) {
     throw new Error('Missing Params');
   }
 
+
   // Validate required keys are present
   if (!requiredKeys || requiredKeys.length === 0) {
     throw new Error('No required params defined');
   }
 
-  let filteredParams = {};
-
-  let missingKeys = [];
+  const filteredParams = {};
+  const missingKeys = [];
   // Validate required params
   for (let i = 0; i < requiredKeys.length; i++) {
     if (params[requiredKeys[i]]) {
@@ -60,31 +48,47 @@ export function permitParams({requiredKeys, optionalKeys}, params) {
   return filteredParams;
 }
 
-let instance = null;
 class GooglePlaces {
 
-  constructor(opts) {
-    if (opts) {
-      this._apiKey = opts.apiKey;
-      this._logEvents = opts.log;
-    } else {
-      this._apiKey = null;
-    }
-    this._log(`API KEY`, this._apiKey);
-    // if (!instance) {
-    //   instance = this;
-    // }
+  constructor() {
   }
 
+  /**
+   * Set the Google API Key from the Developer Console
+   * @param apiKey The Google API key
+   */
+  set apiKey(apiKey) {
+    if (apiKey && (typeof apiKey !== 'string' || !apiKey.match(/^[^\s]+$/ig))) {
+      throw new Error('Invalid API Key');
+    }
+
+    this._apiKey = apiKey;
+    this._log(`API KEY set`, apiKey);
+  }
+
+  get apiKey() {
+    return this._apiKey;
+  }
+
+  set debug(isDebug) {
+    this._debug = isDebug;
+  }
+
+
+  /**
+   * Logs messages based on the _debug
+   * @param message
+   * @private
+   */
   _log(message) {
-    if (this._logEvents) {
+    if (this._debug) {
       console.log('GOOGLE_PLACES', message);
     }
   }
 
   _queryForPlacesDetails(placeId) {
     if (!placeId) {
-      throw new Error('Missing Google Place ID');
+      throw new Error('Place ID is required');
     }
 
     return [
@@ -96,8 +100,8 @@ class GooglePlaces {
   }
 
   _queryForPlacesAutoComplete(addressString) {
-    if (!addressString) {
-      throw new Error('Missing partial address');
+    if (!addressString || addressString.length === 0) {
+      throw new Error('A partial address is required');
     }
 
     return [
@@ -109,7 +113,11 @@ class GooglePlaces {
   }
 
   /**
-   * Performs the fetch to google, returning the raw json result
+   * Fetches the results from the google api
+   * @param path The url to the proper Google Endpoint
+   * @param params The params to concat into the url
+   * @returns {Promise.<TResult>} The result of the fetch
+   * @private
    */
   _query(path, params) {
     if (!path) {
@@ -135,29 +143,6 @@ class GooglePlaces {
   }
 
   /**
-   * Set the Google API Key from the Developer Console
-   * @param apiKey The Google API key
-   */
-  set apiKey(apiKey) {
-    if (apiKey && (typeof apiKey !== 'string' || !apiKey.match(/^[^\s]+$/ig))) {
-      throw new Error('Invalid API Key');
-    }
-
-    this._apiKey = apiKey;
-    this._log(`API KEY set`, apiKey);
-  }
-
-  get apiKey() {
-    return this._apiKey;
-  }
-
-  search(opts) {
-    if (!this._apiKey) {
-
-    }
-  }
-
-  /**
    * Retrieves a list of predictions of a partial address
    * @param addressString The partial address
    */
@@ -170,12 +155,7 @@ class GooglePlaces {
     this._log(query);
 
 
-    return fetch(query)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
+    return this._query(query, params)
       .then(json => {
         this._log(JSON.stringify(json));
         if (json.status === 'OK') {
@@ -191,7 +171,7 @@ class GooglePlaces {
    * @param placeId The placeId from a google result
    * @returns {Promise.<TResult>|*}
    */
-  detailsByID(placeId) {
+  details(placeId) {
     if (!this._apiKey) {
       throw new Error('Invalid API Key');
     }
@@ -199,12 +179,7 @@ class GooglePlaces {
     let query = this._queryForPlacesDetails(placeId);
     this._log(query);
 
-    return fetch(query)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
+    return this._query(query, params)
       .then(json => {
         this._log(JSON.stringify(json));
         if (json.status === 'OK') {

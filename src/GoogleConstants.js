@@ -16,12 +16,12 @@ export const PlaceTypes = {
 
 export const PARAMS = {
   DETAILS: {
-    required: ['placeId'],
-    optional: []
+    requiredKeys: ['placeid'],
+    optionalKeys: ['language']
   },
   AUTOCOMPLETE: {
-    required: [],
-    optional: []
+    requiredKeys: ['input'],
+    optionalKeys: ['offset', 'location', 'radius', 'languages', 'types', 'strictbounds']
   }
 };
 

@@ -2,7 +2,7 @@
   "name": "react-native-google-places-web",
   "version": "0.0.3",
   "description": "A simple, elegant wrapper for the Google Places Web API using fetch.",
-  "main": "./lib/GooglePlaces.js",
+  "main": "lib/GooglePlaces.js",
   "scripts": {
     "test": "jest",
     "watch": "jest --verbose --watch",
@@ -26,10 +26,12 @@
     "modulePathIgnorePatterns": []
   },
   "keywords": [
-    "Google",
-    "Places",
-    "React",
-    "React Native"
+    "google",
+    "places",
+    "web",
+    "react",
+    "native",
+    "react native"
   ],
   "author": "Miguel Caballero",
   "license": "ISC",

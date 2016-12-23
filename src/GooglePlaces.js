@@ -39,12 +39,7 @@ class GooglePlaces {
    * @returns {{}} A filtered hash of valid params
    * @private
    */
-  _permitParams({requiredKeys, optionalKeys}, params) {
-    // Validate params are present
-    if (!params || Object.keys(params).length === 0) {
-      throw new Error('Missing Params');
-    }
-
+  _permitParams({requiredKeys, optionalKeys}, params = {}) {
 
     // Validate required keys are present
     if (!requiredKeys || requiredKeys.length === 0) {
@@ -105,6 +100,8 @@ class GooglePlaces {
       throw new Error('Invalid API key');
     } else if (!api.path) {
       throw new Error('Google API path is required');
+    } else if (!params) {
+      params = {};
     }
 
     params = this._permitParams(api, params);

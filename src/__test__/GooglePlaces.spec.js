@@ -1,4 +1,5 @@
-import Places, {permitParams} from '../GooglePlaces';
+'use strict';
+import Places from '../GooglePlaces';
 import {PARAMS} from '../GoogleConstants';
 
 describe('API Key', () => {
@@ -31,12 +32,23 @@ describe('API Key', () => {
   });
 
 
+
+
+});
+
+describe('Auto Complete', () => {
+  const key1 = 'TestKey';
+  const key2 = '019494949494';
+  const key3 = null;
+
+  const invalidKey1 = 3030293949393;
+  const invalidKey2 = 'asdfdfjfjd sjdfjd';
+
   it('should throw an error for missing an address', () => {
     Places.apiKey = key1;
-    expect(() => Places.autoComplete()).toThrowError('Missing partial address');
-    expect(() => Places.autoComplete(null)).toThrowError('Missing partial address');
-    expect(() => Places.autoComplete(undefined)).toThrowError('Missing partial address');
-    expect(() => Places.autoComplete('')).toThrowError('Missing partial address');
+    expect(() => Places.autoComplete()).toThrowError('Missing required params: [input]');
+    expect(() => Places.autoComplete(null)).toThrowError('Missing required params: [input]');
+    expect(() => Places.autoComplete(undefined)).toThrowError('Missing required params: [input]');
+    expect(() => Places.autoComplete('')).toThrowError('Missing required params: [input]');
   });
-
 });

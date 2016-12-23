@@ -1,50 +1,6 @@
 import Places, {permitParams} from '../GooglePlaces';
 import {PARAMS} from '../GoogleConstants';
 
-let fetch = jest.fn();
-// fetch.Headers = Headers;
-// fetch.Request = Request;
-// fetch.Response = Response;
-//
-fetch.mockResponse = (body, init) => {
-  fetch.mockImplementationOnce(() => Promise.resolve({json: () => Promise.resolve(body, init)}));
-};
-
-describe('Param Filtering', () => {
-  const optionalKeys = ['radius'];
-
-  const placeid = 'abcdefg12345';
-  const input = '1234 Generic Lane';
-  const radius = 2000;
-
-  beforeEach(() => {
-    Places.apiKey = null;
-  });
-
-  it('should throw an error for missing REQUIRED param definitions', () => {
-    expect(() => permitParams({optionalKeys}, {placeid, input})).toThrowError('No required params defined');
-  });
-
-  it('should throw an error for missing params', () => {
-    expect(() => permitParams({optionalKeys}, null)).toThrowError('Missing Params');
-    expect(() => permitParams(PARAMS.AUTOCOMPLETE, null)).toThrowError('Missing Params');
-    expect(() => permitParams(PARAMS.AUTOCOMPLETE, {})).toThrowError('Missing Params');
-
-    expect(() => permitParams({optionalKeys: PARAMS.AUTOCOMPLETE.optionalKeys}, null)).toThrowError('Missing Params');
-    expect(() => permitParams({optionalKeys: PARAMS.AUTOCOMPLETE.optionalKeys}, undefined)).toThrowError('Missing Params');
-  });
-
-  it('should throw an error for missing params that are REQUIRED', () => {
-    expect(() => permitParams(PARAMS.DETAILS, {input})).toThrowError('Missing required params: [placeid]');
-  });
-
-  it('should filter params successfully', () => {
-    expect(permitParams(PARAMS.DETAILS, {placeid, input})).toEqual({placeid});
-    expect(permitParams(PARAMS.AUTOCOMPLETE, {input, radius, something: 'else'})).toEqual({input, radius});
-  });
-});
-
-
 describe('API Key', () => {
 
   const key1 = 'TestKey';

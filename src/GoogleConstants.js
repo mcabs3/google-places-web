@@ -14,12 +14,14 @@ export const PlaceTypes = {
   CITIES: '(cities)'
 };
 
-export const PARAMS = {
+export const API = {
   DETAILS: {
+    path: 'details',
     requiredKeys: ['placeid'],
     optionalKeys: ['language']
   },
   AUTOCOMPLETE: {
+    path: 'autocomplete',
     requiredKeys: ['input'],
     optionalKeys: ['offset', 'location', 'radius', 'languages', 'types', 'strictbounds']
   }

@@ -1,6 +1,6 @@
 {
   "name": "react-native-google-places-web",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A simple, elegant wrapper for the Google Places Web API using fetch.",
   "main": "lib/GooglePlaces.js",
   "scripts": {

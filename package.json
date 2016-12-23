@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mcabs3/react-native-google-places-web"
+    "url": "https://github.com/mcabs3/google-places-web"
   },
   "babel": {
     "presets": [

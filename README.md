@@ -61,9 +61,10 @@ const Places = require('react-native-google-places-web').default;
 Places.apiKey = 'YOUR_API_KEY';
 Places.debug = true;
 
-Places.autocomplete({input: '1600 Pennsylvania Ave'}).then(res => {
-  return res[0] || {};
-})
+Places.autocomplete({input: '1600 Pennsylvania Ave'})
+    .then(res => {
+      return res[0] || {};
+    })
     .then(place => {
       if (place.place_id) {
         return Places.details({placeid: place.place_id});

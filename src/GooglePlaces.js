@@ -1,6 +1,5 @@
 'use strict';
 import {GOOGLE_PLACES_API, API} from './GoogleConstants';
-
 class GooglePlaces {
 
   constructor() {
@@ -75,6 +74,7 @@ class GooglePlaces {
 
   /**
    * Logs messages based on the _debug
+   * @param title
    * @param message
    * @private
    */
@@ -108,8 +108,7 @@ class GooglePlaces {
 
     let uri = [
       GOOGLE_PLACES_API,
-      `/${path}`,
-      '/json',
+      `${api.path}/json`,
       `?key=${this._apiKey}`
     ].join('');
 
@@ -140,7 +139,7 @@ class GooglePlaces {
         if (res.ok) {
           return res.json();
         } else {
-          throw new Error('Google responded not ok');
+          throw new Error(`Google responded not ok: ${JSON.stringify(res)}`);
         }
       })
   }
@@ -151,7 +150,7 @@ class GooglePlaces {
    * @param opts Optional parameters for Google API
    * @returns {Promise.<TResult>}
    */
-  autoComplete(opts = {}) {
+  autocomplete(opts = {}) {
     const query = this._buildUri(API.AUTOCOMPLETE, opts);
     return this._query(query)
       .then(json => {
@@ -170,7 +169,7 @@ class GooglePlaces {
    * @returns {Promise.<TResult>|*}
    */
   details(opts = {}) {
-    const query = this._buildUri(API.DETAILS, params);
+    const query = this._buildUri(API.DETAILS, opts);
     return this._query(query)
       .then(json => {
         this._log(JSON.stringify(json));

@@ -46,9 +46,11 @@ describe('Auto Complete', () => {
 
   it('should throw an error for missing an address', () => {
     Places.apiKey = key1;
-    expect(() => Places.autoComplete()).toThrowError('Missing required params: [input]');
-    expect(() => Places.autoComplete(null)).toThrowError('Missing required params: [input]');
-    expect(() => Places.autoComplete(undefined)).toThrowError('Missing required params: [input]');
-    expect(() => Places.autoComplete('')).toThrowError('Missing required params: [input]');
+    expect(() => Places.autocomplete()).toThrowError('Missing required params: [input]');
+    expect(() => Places.autocomplete(null)).toThrowError('Missing required params: [input]');
+    expect(() => Places.autocomplete(undefined)).toThrowError('Missing required params: [input]');
+    expect(() => Places.autocomplete('')).toThrowError('Missing required params: [input]');
+
+    // expect(() => Places.autocomplete(''))
   });
 });

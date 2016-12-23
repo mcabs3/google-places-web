@@ -1,3 +1,4 @@
 src/
 __test__/
 *.spec.js
+*.html

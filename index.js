@@ -1,2 +1,1 @@
-import GooglePlaces from './src/GooglePlaces';
-export default GooglePlaces;
+exports.default = require('./lib/GooglePlaces');

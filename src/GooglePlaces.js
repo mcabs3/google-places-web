@@ -68,7 +68,7 @@ class GooglePlaces {
         }
       }
     }
-    this._log('Google Places Params: ', JSON.stringify(params));
+    this._log('google-places-web (params): ', JSON.stringify(params));
     return filteredParams;
   }
 
@@ -81,7 +81,7 @@ class GooglePlaces {
   _log(title, message) {
     if (this._debug) {
       if (!message) {
-        console.log('Google Places API:', message);
+        console.log('google-places-web:', message);
       } else {
         console.log(title, message);
       }
@@ -95,20 +95,18 @@ class GooglePlaces {
    * @returns {string}
    * @private
    */
-  _buildUri(api, params = {}) {
+  _buildUri(path, params = {}) {
     if (!this._apiKey) {
       throw new Error('Invalid API key');
-    } else if (!api.path) {
+    } else if (!path) {
       throw new Error('Google API path is required');
     } else if (!params) {
-      params = {};
+      throw new Error('Missing params');
     }
-
-    params = this._permitParams(api, params);
 
     let uri = [
       GOOGLE_PLACES_API,
-      `${api.path}/json`,
+      `${path}/json`,
       `?key=${this._apiKey}`
     ].join('');
 
@@ -118,68 +116,100 @@ class GooglePlaces {
     }
 
     const query = `${uri}&${parts.join('&')}`;
-    this._log('Google Places Query: ', query);
+    this._log('google-places-web (query): ', query);
     return query;
   }
 
   /**
-   * Fetches the results from the google api
-   * @param path The url to the proper Google Endpoint
+   *
+   * @param path The API Path for the query
    * @param params The params to concat into the url
-   * @returns {Promise.<TResult>} The result of the fetch
+   * @returns {Promise}
    * @private
    */
-  _query(query) {
-    if (!query) {
-      throw new Error('No query provided');
-    }
-
+  _query(path, params = {}) {
+    const query = this._buildUri(path, params);
     return fetch(query)
       .then(res => {
         if (res.ok) {
-          return res.json();
+          return res.json()
+            .then(json => {
+              this._log(JSON.stringify(json));
+              if (json.status !== 'OK') {
+                throw new Error(json.status);
+              } else {
+                return json;
+              }
+            });
         } else {
-          throw new Error(`Google responded not ok: ${JSON.stringify(res)}`);
+          throw new Error(`HTTP ${res.status}`);
         }
       })
   }
 
   /**
    * Retrieves a list of predictions of a partial address
-   * @param input The partial address
    * @param opts Optional parameters for Google API
-   * @returns {Promise.<TResult>}
+   * @returns {Promise}
    */
   autocomplete(opts = {}) {
-    const query = this._buildUri(API.AUTOCOMPLETE, opts);
-    return this._query(query)
-      .then(json => {
-        this._log(JSON.stringify(json));
-        if (json.status === 'OK') {
-          return json.predictions;
-        } else {
-          throw new Error(json.status);
-        }
-      });
+    const params = this._permitParams(API.AUTOCOMPLETE, opts);
+
+
+    return this._query(API.AUTOCOMPLETE.path, params)
+      .then(res => res.predictions);
   }
 
   /**
    * Retrieve the details of a Google Place based on the Place ID
-   * @param placeId The placeId from a google result
-   * @returns {Promise.<TResult>|*}
+   * @param opts Optional parameters for Google API
+   * @returns {Promise}
    */
   details(opts = {}) {
-    const query = this._buildUri(API.DETAILS, opts);
-    return this._query(query)
-      .then(json => {
-        this._log(JSON.stringify(json));
-        if (json.status === 'OK') {
-          return json.result;
-        } else {
-          throw new Error(json.status);
-        }
-      });
+    const params = this._permitParams(API.DETAILS, opts);
+
+    return this._query(API.DETAILS.path, params)
+      .then(json => json.result);
   }
+
+  /**
+   *
+   * @param opts Optional parameters for Google API
+   */
+  nearbysearch(opts = {}) {
+    const params = this._permitParams(API.NEARBY_SEARCH, opts);
+
+    return this._query(API.NEARBY_SEARCH.path, params)
+      .then(json => json.result);
+  }
+
+  /**
+   *
+   * @param opts Optional parameters for Google API
+   */
+  textsearch(opts = {}) {
+    const params = this._permitParams(API.TEXT_SEARCH, opts);
+
+    return this._query(API.TEXT_SEARCH.path, params)
+      .then(json => json.result);
+
+  }
+
+  /**
+   *
+   * @param opts Optional parameters for Google API
+   */
+  radarsearch(opts = {}) {
+    const params = this._permitParams(API.RADAR_SEARCH, opts);
+    if (!params.name && !params.keyword && !params.type) {
+      throw new Error('Missing required parameter: [keyword, name, or type]')
+    }
+
+    return this._query(API.RADAR_SEARCH.path, params)
+      .then(json => json.result);
+  }
+
+
 }
 export default new GooglePlaces();
 // export default GooglePlaces;

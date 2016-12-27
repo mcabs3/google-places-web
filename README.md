@@ -3,25 +3,25 @@ This library was created to provide the Google Place web API to be accessible fo
 
 ## Installation
 
-```javascript
+```text
 // React Native
-npm install --save react-native-google-places-web;
+npm install --save google-places-web;
 
 // Web
-npm install --save react-native-google-places-web whatwg-fetch;
+npm install --save google-places-web whatwg-fetch;
 
 // Node
-npm install --save react-native-google-places-web node-fetch;
+npm install --save google-places-web node-fetch;
 ````
 
 
 ### Importing
 ```javascript
 // ES6
-import Places from 'ReactNativeGooglePlacesWeb';
+import Places from 'google-places-web';
 
 // ES5
-var Places = require('ReactNativeGooglePlacesWeb').default;
+var Places = require('google-places-web').default;
 
 Places.apiKey = 'YOUR_API_KEY';
 Places.debug = true;
@@ -57,7 +57,7 @@ Places.details({placeid: whiteHousePlaceID})
 
 ```javascript
 'use strict';
-const Places = require('react-native-google-places-web').default;
+const Places = require('google-places-web').default;
 Places.apiKey = 'YOUR_API_KEY';
 Places.debug = true;
 

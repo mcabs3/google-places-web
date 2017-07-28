@@ -1,5 +1,5 @@
-# React Native Google Places
-This library was created to provide the Google Place web API to be accessible for react native. There are already many other libraries that implement the Native SDKs, but this library will allow you to use the same library in both Web and Mobile experience.
+# Google Places Web
+This library was created to provide the Google Place Web (JS) API to be accessible for React (Web & Native), and Node projects. There are already many other libraries that implement the Native SDKs, but this library will allow you to use the same library for both Web and Mobile experience.
 
 ## Installation
 
@@ -13,7 +13,6 @@ yarn add google-places-web whatwg-fetch;
 // Node
 yarn add google-places-web node-fetch;
 ```
-
 
 ## Importing
 

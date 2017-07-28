@@ -1,13 +1,13 @@
 {
   "name": "google-places-web",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "A simple, elegant wrapper for the Google Places Web API",
   "main": "lib/google/Places.js",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --verbose --watch",
     "compile": "babel -d lib/ src/ --ignore '**/*.spec.js'",
-    "prepublish": "npm run compile"
+    "prepare": "yarn compile"
   },
   "repository": {
     "type": "git",
@@ -38,11 +38,11 @@
   "devDependencies": {
     "babel": "6.5.2",
     "babel-cli": "^6.18.0",
-    "babel-jest": "17.0.2",
     "babel-eslint": "^7.2.3",
+    "babel-jest": "17.0.2",
     "babel-preset-es2015": "^6.18.0",
-    "jest": "17.0.3",
     "eslint": "^4.1.1",
-    "eslint-plugin-jest": "^20.0.3"
+    "eslint-plugin-jest": "^20.0.3",
+    "jest": "17.0.3"
   }
 }

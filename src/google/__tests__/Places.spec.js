@@ -1,6 +1,8 @@
-'use strict';
+// HACK - Loads Fetch for testing
+require('isomorphic-fetch');
 import Places from '../Places';
 
+const MASTER_KEY = '<VALID_API_KEY>';
 const key1 = 'TestKey';
 const key2 = '019494949494';
 const key3 = null;
@@ -38,7 +40,7 @@ describe('Details', () => {
   });
 
   it('should successfully find Wrigley Field', async () => {
-    Places.apiKey = key1;
+    Places.apiKey = MASTER_KEY;
     const WRIGLEY_FIELD_PLACE_ID = 'ChIJId-a5bLTD4gRRtbdduE-6hw';
     const wrigley = await Places.details({ placeid: WRIGLEY_FIELD_PLACE_ID });
     expect(wrigley).toBeDefined();
@@ -64,7 +66,7 @@ describe('Auto Complete', () => {
 
   it('should perform a successful autocomplete for Wrigley Field', async () => {
     const WRIGLEY_FIELD_PLACE_ID = 'ChIJId-a5bLTD4gRRtbdduE-6hw';
-    Places.apiKey = key1;
+    Places.apiKey = MASTER_KEY;
     const places = await Places.autocomplete({ input: 'Wrigley Field' });
     let found;
     for (let place of places) {

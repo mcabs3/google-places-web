@@ -1,4 +1,4 @@
-import { PlaceTypes } from '../GoogleConstants';
+import { PlaceTypes } from '../Constants';
 
 describe('PlaceType', () => {
   it('should map correctly to Google entity', () => {

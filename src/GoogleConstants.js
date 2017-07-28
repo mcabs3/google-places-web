@@ -23,7 +23,7 @@ export const API = {
   AUTOCOMPLETE: {
     path: 'autocomplete',
     requiredKeys: ['input'],
-    optionalKeys: ['offset', 'location', 'radius', 'languages', 'types', 'strictbounds']
+    optionalKeys: ['offset', 'location', 'radius', 'languages', 'types', 'strictbounds', 'components']
   }
 };
 

@@ -3,19 +3,20 @@ This library was created to provide the Google Place web API to be accessible fo
 
 ## Installation
 
-```text
+```shell
 // React Native
-npm install --save google-places-web;
+yarn add google-places-web;
 
 // Web
-npm install --save google-places-web whatwg-fetch;
+yarn add google-places-web whatwg-fetch;
 
 // Node
-npm install --save google-places-web node-fetch;
-````
+yarn add google-places-web node-fetch;
+```
 
 
-### Importing
+## Importing
+
 ```javascript
 // ES6
 import Places from 'google-places-web';
@@ -44,14 +45,14 @@ Places.autocomplete({input: partialAddress, radius, language})
 
 ### [Places Details](https://developers.google.com/places/web-service/details)
 ```javascript
-const whiteHousePlaceID = '08e382319596a3db01876b29415b2321e6562d60';
+const whiteHousePlaceID = 'ChIJGVtI4by3t4kRr51d_Qm_x58';
 
 Places.details({placeid: whiteHousePlaceID})
   .then(result => {
     // result object
   })
   .catch(e => console.log(e));
-````
+```
 
 ## Example
 
@@ -62,8 +63,8 @@ Places.apiKey = 'YOUR_API_KEY';
 Places.debug = true;
 
 Places.autocomplete({input: '1600 Pennsylvania Ave'})
-    .then(res => {
-      return res[0] || {};
+    .then(places => {
+      return places[0] || {};
     })
     .then(place => {
       if (place.place_id) {
@@ -80,7 +81,8 @@ Places.autocomplete({input: '1600 Pennsylvania Ave'})
 ## Errors
 - `Invalid API Key`
 - `STATUS_MESSAGE` - Google responds with HTTP 200 but JSON contains an "error". This is parsed from the Google API response, ex. `ZERO_RESULTS`
-- `Missing required params: [<PARAM1>, <PARAM2>] ` - Required params PARAM1 & PARAM2 are `undefined` or `null` 
+- `Missing required params: [<PARAM1>, <PARAM2>] ` - Required params PARAM1 & PARAM2 are `undefined` or `null`
+- `No parameters provided` - A method was called without passing a parameters object to the method, most likely passed `null`, `undefined` or nothing. ex. `Places.autocomplete();` instead of `Places.autcomplete({foo: 'barr});`
 
 ## Important Notes
 **Google states that you can use Place Autocomplete even without a map. If you do show a map, it must be a Google map. When you display predictions from the Place Autocomplete service without a map, you must include the [Powered by Google](https://developers.google.com/places/web-service/policies#logo_requirements) logo.**

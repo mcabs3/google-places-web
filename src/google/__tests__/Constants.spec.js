@@ -1,7 +1,6 @@
-import {PlaceTypes, PARAMS} from '../GoogleConstants';
+import { PlaceTypes } from '../GoogleConstants';
 
 describe('PlaceType', () => {
-
   it('should map correctly to Google entity', () => {
     expect(PlaceTypes.GEOCODE).toBe('geocode');
     expect(PlaceTypes.ADDRESS).toBe('address');

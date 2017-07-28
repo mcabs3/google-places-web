@@ -1,8 +1,9 @@
-'use strict';
-import {GOOGLE_PLACES_API, API} from './GoogleConstants';
+import { GOOGLE_PLACES_API, API } from './Constants';
 class GooglePlaces {
-
-  constructor() {
+  constructor(opts = {}) {
+    const { apiKey, debug } = opts;
+    this.apiKey = apiKey;
+    this.debug = debug;
   }
 
   /**
@@ -38,12 +39,14 @@ class GooglePlaces {
    * @returns {{}} A filtered hash of valid params
    * @private
    */
-  _permitParams({requiredKeys, optionalKeys}, params = {}) {
-
+  _permitParams({ requiredKeys, optionalKeys }, params) {
     // Validate required keys are present
     if (!requiredKeys || requiredKeys.length === 0) {
       throw new Error('No required params defined');
+    } else if (!params) {
+      throw new Error('No parameters provided');
     }
+
 
     const filteredParams = {};
     const missingKeys = [];
@@ -95,7 +98,7 @@ class GooglePlaces {
    * @returns {string}
    * @private
    */
-  _buildUri(path, params = {}) {
+  _buildUri(path, params) {
     if (!this._apiKey) {
       throw new Error('Invalid API key');
     } else if (!path) {
@@ -104,7 +107,7 @@ class GooglePlaces {
       throw new Error('Missing params');
     }
 
-    let uri = [
+    const uri = [
       GOOGLE_PLACES_API,
       `${path}/json`,
       `?key=${this._apiKey}`
@@ -127,14 +130,14 @@ class GooglePlaces {
    * @returns {Promise}
    * @private
    */
-  _query(path, params = {}) {
+  _query(path, params) {
     const query = this._buildUri(path, params);
     return fetch(query)
       .then(res => {
         if (res.ok) {
           return res.json()
             .then(json => {
-              this._log(JSON.stringify(json));
+              this._log('JSON', JSON.stringify(json));
               if (json.status !== 'OK') {
                 throw new Error(json.status);
               } else {
@@ -144,7 +147,7 @@ class GooglePlaces {
         } else {
           throw new Error(`HTTP ${res.status}`);
         }
-      })
+      });
   }
 
   /**
@@ -152,10 +155,8 @@ class GooglePlaces {
    * @param opts Optional parameters for Google API
    * @returns {Promise}
    */
-  autocomplete(opts = {}) {
+  autocomplete(opts) {
     const params = this._permitParams(API.AUTOCOMPLETE, opts);
-
-
     return this._query(API.AUTOCOMPLETE.path, params)
       .then(res => res.predictions);
   }
@@ -165,7 +166,7 @@ class GooglePlaces {
    * @param opts Optional parameters for Google API
    * @returns {Promise}
    */
-  details(opts = {}) {
+  details(opts) {
     const params = this._permitParams(API.DETAILS, opts);
 
     return this._query(API.DETAILS.path, params)
@@ -212,4 +213,3 @@ class GooglePlaces {
 
 }
 export default new GooglePlaces();
-// export default GooglePlaces;

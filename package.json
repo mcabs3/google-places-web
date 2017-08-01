@@ -1,6 +1,6 @@
 {
   "name": "google-places-web",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A simple, elegant wrapper for the Google Places Web API",
   "main": "dist/google-places-web.cjs.js",
   "module": "dist/google-places-web.esm.js",
@@ -8,7 +8,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --verbose --watch",
-    "compile": "babel -d lib/ src/ --ignore '**/*.spec.js'",
+    "compile": "yarn build",
     "build": "rollup -c",
     "dev": "rollup -c -w"
   },

@@ -2,24 +2,19 @@
   "name": "google-places-web",
   "version": "0.0.6",
   "description": "A simple, elegant wrapper for the Google Places Web API",
-  "main": "lib/google/Places.js",
+  "main": "dist/google-places-web.cjs.js",
+  "module": "dist/google-places-web.esm.js",
+  "browser": "dist/google-places-web.umd.js",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --verbose --watch",
     "compile": "babel -d lib/ src/ --ignore '**/*.spec.js'",
-    "prepare": "yarn compile"
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/mcabs3/google-places-web"
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ],
-    "ignore": [
-      "**/*.test.js"
-    ]
   },
   "jest": {
     "verbose": true,
@@ -36,13 +31,18 @@
   "author": "Miguel Caballero",
   "license": "ISC",
   "devDependencies": {
-    "babel": "6.5.2",
-    "babel-cli": "^6.18.0",
+    "babel-preset-env": "^1.6.0",
     "babel-eslint": "^7.2.3",
     "babel-jest": "17.0.2",
-    "babel-preset-es2015": "^6.18.0",
     "eslint": "^4.1.1",
     "eslint-plugin-jest": "^20.0.3",
-    "jest": "17.0.3"
-  }
+    "jest": "17.0.3",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-watch": "^4.0.0"
+  },
+  "files": [
+    "dist"
+  ]
 }

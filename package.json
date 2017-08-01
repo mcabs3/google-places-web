@@ -1,7 +1,7 @@
 {
   "name": "google-places-web",
   "version": "0.0.7",
-  "description": "A simple, elegant wrapper for the Google Places Web API",
+  "description": "A simple promise-based wrapper for the Google Places Web API",
   "main": "dist/google-places-web.cjs.js",
   "module": "dist/google-places-web.esm.js",
   "browser": "dist/google-places-web.umd.js",
@@ -17,18 +17,14 @@
     "url": "https://github.com/mcabs3/google-places-web"
   },
   "jest": {
-    "verbose": true,
-    "modulePathIgnorePatterns": []
+    "verbose": true
   },
   "keywords": [
     "google",
     "places",
-    "web",
-    "react",
-    "native",
-    "react native"
+    "web"
   ],
-  "author": "Miguel Caballero",
+  "author": "Miguel Caballero <mcabs3@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "babel-preset-env": "^1.6.0",

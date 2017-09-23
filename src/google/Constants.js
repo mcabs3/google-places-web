@@ -24,6 +24,15 @@ export const API = {
     path: 'autocomplete',
     requiredKeys: ['input'],
     optionalKeys: ['offset', 'location', 'radius', 'languages', 'types', 'strictbounds', 'components']
-  }
+  },
+  NEARBY_SEARCH: {
+    path: 'nearbysearch',
+    requiredKeys: ['location'],
+    optionalKeys: ['type', 'radius', 'rankby', 'keyword', 'language', 'minprice', 'maxprice', 'name', 'opennow', 'pagetoken', 'region']
+  },
+  TEXT_SEARCH: {
+    path: 'textsearch',
+    requiredKeys: ['query'],
+    optionalKeys: ['location', 'radius', 'language', 'minprice', 'maxprice', 'opennow', 'pagetoken', 'type']
 };
 

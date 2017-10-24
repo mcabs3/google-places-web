@@ -181,7 +181,7 @@ class GooglePlaces {
     const params = this._permitParams(API.NEARBY_SEARCH, opts);
 
     return this._query(API.NEARBY_SEARCH.path, params)
-      .then(json => json.result);
+      .then(json => json.results);
   }
 
   /**
@@ -192,7 +192,7 @@ class GooglePlaces {
     const params = this._permitParams(API.TEXT_SEARCH, opts);
 
     return this._query(API.TEXT_SEARCH.path, params)
-      .then(json => json.result);
+      .then(json => json.results);
 
   }
 
@@ -207,7 +207,7 @@ class GooglePlaces {
     }
 
     return this._query(API.RADAR_SEARCH.path, params)
-      .then(json => json.result);
+      .then(json => json.results);
   }
 
 

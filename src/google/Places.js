@@ -60,7 +60,7 @@ class GooglePlaces {
     }
 
     if (missingKeys.length !== 0) {
-      throw new Error(`Missing required params: [${missingKeys.join(', ')}]`)
+      throw new Error(`Missing required params: [${missingKeys.join(', ')}]`);
     }
 
     // Validate optional params
@@ -155,10 +155,21 @@ class GooglePlaces {
    * @param opts Optional parameters for Google API
    * @returns {Promise}
    */
-  autocomplete(opts) {
+  autocomplete(opts, cb) {
     const params = this._permitParams(API.AUTOCOMPLETE, opts);
-    return this._query(API.AUTOCOMPLETE.path, params)
-      .then(res => res.predictions);
+    return new Promise((res, rej) => {
+      return this._query(API.AUTOCOMPLETE.path, params)
+        .then(res => res.predictions)
+        .then(predictions => {
+          res(predictions);
+          return cb(null, predictions);
+        })
+        .catch(e => {
+          rej(e);
+          return cb(e);
+        });
+    });
+
   }
 
   /**
@@ -166,33 +177,63 @@ class GooglePlaces {
    * @param opts Optional parameters for Google API
    * @returns {Promise}
    */
-  details(opts) {
-    const params = this._permitParams(API.DETAILS, opts);
+  details(opts, cb) {
+    return new Promise((res, rej) => {
+      const params = this._permitParams(API.DETAILS, opts);
+      return this._query(API.DETAILS.path, params)
+        .then(json => {
+          res(json.result);
+          return cb(null, json.result);
+        })
+        .catch(e => {
+          rej(e);
+          return cb(e);
+        });
+    });
 
-    return this._query(API.DETAILS.path, params)
-      .then(json => json.result);
   }
 
   /**
    *
    * @param opts Optional parameters for Google API
    */
-  nearbysearch(opts = {}) {
+  nearbysearch(opts = {}, cb) {
     const params = this._permitParams(API.NEARBY_SEARCH, opts);
 
-    return this._query(API.NEARBY_SEARCH.path, params)
-      .then(json => json.results);
+    return new Promise((res, rej) => {
+      return this._query(API.NEARBY_SEARCH.path, params)
+        .then(res => res.results)
+        .then(results => {
+          res(results);
+          return cb(null, results);
+        })
+        .catch(e => {
+          rej(e);
+          return cb(e);
+        });
+    });
   }
 
   /**
    *
    * @param opts Optional parameters for Google API
    */
-  textsearch(opts = {}) {
+  textsearch(opts = {}, cb) {
     const params = this._permitParams(API.TEXT_SEARCH, opts);
 
-    return this._query(API.TEXT_SEARCH.path, params)
-      .then(json => json.results);
+    return new Promise((res, rej) => {
+      return this._query(API.TEXT_SEARCH.path, params)
+        .then(res => res.results)
+        .then(results => {
+          res(results);
+          return cb(null, results);
+        })
+        .catch(e => {
+          rej(e);
+          return cb(e);
+        });
+    });
+
 
   }
 
@@ -200,16 +241,26 @@ class GooglePlaces {
    *
    * @param opts Optional parameters for Google API
    */
-  radarsearch(opts = {}) {
+  radarsearch(opts = {}, cb) {
     const params = this._permitParams(API.RADAR_SEARCH, opts);
+
     if (!params.name && !params.keyword && !params.type) {
-      throw new Error('Missing required parameter: [keyword, name, or type]')
+      throw new Error('Missing required parameter: [keyword, name, or type]');
     }
 
-    return this._query(API.RADAR_SEARCH.path, params)
-      .then(json => json.results);
+    return new Promise((res, rej) => {
+      return this._query(API.RADAR_SEARCH.path, params)
+        .then(res => res.results)
+        .then(results => {
+          res(results);
+          return cb(null, results);
+        })
+        .catch(e => {
+          rej(e);
+          return cb(e);
+        });
+    });
   }
-
-
 }
+
 export default new GooglePlaces();

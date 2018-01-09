@@ -1,6 +1,6 @@
 {
   "name": "google-places-web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple promise-based wrapper for the Google Places Web API",
   "main": "dist/google-places-web.cjs.js",
   "module": "dist/google-places-web.esm.js",
@@ -27,9 +27,9 @@
   "author": "Miguel Caballero <mcabs3@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "babel-preset-env": "^1.6.0",
     "babel-eslint": "^7.2.3",
     "babel-jest": "17.0.2",
+    "babel-preset-env": "^1.6.0",
     "eslint": "^4.1.1",
     "eslint-plugin-jest": "^20.0.3",
     "jest": "17.0.3",

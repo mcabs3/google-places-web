@@ -7,24 +7,19 @@ I am a big fan of the fetch api to make promise based network requests. For appl
 ## Installation
 
 ```shell
-// React Native
+// React Native, Web, Node
 yarn add google-places-web;
-
-// Web
-yarn add google-places-web whatwg-fetch;
-
-// Node
-yarn add google-places-web node-fetch;
+npm i google-places-web -S
 ```
 
 ## Importing
 
 ```javascript
 // ES6
-import {Places} from 'google-places-web';
+import Places from 'google-places-web';
 
 // ES5
-var Places = require('google-places-web').Places;
+var Places = require('google-places-web');
 
 // Setup
 Places.apiKey = '<API_KEY>';
@@ -60,8 +55,7 @@ Places.details({ placeid: whiteHousePlaceID })
 ## Full Example
 
 ```javascript
-'use strict';
-import { Places } from 'google-places-web'
+import Places from 'google-places-web'
 Places.apiKey = '<API_KEY>';
 Places.debug = true;
 

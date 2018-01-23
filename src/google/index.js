@@ -1,4 +1,4 @@
-import { GOOGLE_PLACES_API, API } from './Constants';
-import Places from './Places';
-
-export { Places, GOOGLE_PLACES_API, API };
+import Places, { GooglePlaces } from './Places';
+export { GOOGLE_PLACES_API, API } from './Constants';
+export { Places };
+export default GooglePlaces;

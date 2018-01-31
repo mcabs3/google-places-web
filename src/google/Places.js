@@ -1,6 +1,10 @@
-import { GOOGLE_PLACES_API, API } from './Constants';
+import { API } from './Constants';
 import QueryString from 'query-string';
-// import axios from 'axios';
+import axios from 'axios';
+
+const placesAxios = axios.create({
+  baseURL: 'https://maps.googleapis.com/maps/api/place'
+});
 
 export class GooglePlaces {
   constructor(opts = {}) {
@@ -13,8 +17,8 @@ export class GooglePlaces {
    * Set the Google API Key from the Developer Console
    * @param {string} apiKey The Google API key
    */
-  set apiKey(apiKey = '') {
-    if (typeof apiKey !== 'string' || !apiKey.match(/^[^\s]+$/ig)) {
+  set apiKey(apiKey) {
+    if (apiKey && (typeof apiKey !== 'string' || !apiKey.match(/^[^\s]+$/ig))) {
       throw new Error('Invalid API Key');
     }
 
@@ -110,8 +114,7 @@ export class GooglePlaces {
     }
 
     const uri = [
-      GOOGLE_PLACES_API,
-      `${path}/json`,
+      `/${path}/json`,
       `?key=${this._apiKey}`
     ].join('');
 
@@ -130,21 +133,18 @@ export class GooglePlaces {
    */
   _query(path, params) {
     const query = this._buildUri(path, params);
-    return fetch(query)
-      .then(res => {
-        if (res.ok) {
-          return res.json()
-            .then(json => {
-              this._log('JSON', JSON.stringify(json));
-              if (json.status !== 'OK') {
-                throw new Error(json.status);
-              } else {
-                return json;
-              }
-            });
-        } else {
-          throw new Error(`HTTP ${res.status}`);
+    return placesAxios.get(query)
+      .then(response => {
+        if (response.statusText === 'OK') {
+          const json = response.data;
+          this._log('JSON', JSON.stringify(json));
+          if (json.status !== 'OK') {
+            throw new Error(json.status);
+          } else {
+            return json;
+          }
         }
+        throw new Error(`HTTP ${response.status}`);
       });
   }
 
@@ -154,7 +154,7 @@ export class GooglePlaces {
    * @param {Function} [cb] callback fallback support
    * @returns {Promise}
    */
-  autocomplete(opts, cb) {
+  autocomplete(opts, cb = () => { }) {
     const params = this._permitParams(API.AUTOCOMPLETE, opts);
     return new Promise((res, rej) => {
       return this._query(API.AUTOCOMPLETE.path, params)
@@ -177,7 +177,7 @@ export class GooglePlaces {
    * @param {Function} [cb] callback fallback support
    * @returns {Promise}
    */
-  details(opts, cb) {
+  details(opts, cb = () => { }) {
     return new Promise((res, rej) => {
       const params = this._permitParams(API.DETAILS, opts);
       return this._query(API.DETAILS.path, params)
@@ -198,7 +198,7 @@ export class GooglePlaces {
    * @param {Object} [opts] Optional parameters for Google API
    * @param {Function} [cb] callback fallback support
    */
-  nearbysearch(opts = {}, cb) {
+  nearbysearch(opts = {}, cb = () => { }) {
     const params = this._permitParams(API.NEARBY_SEARCH, opts);
 
     return new Promise((res, rej) => {
@@ -220,7 +220,7 @@ export class GooglePlaces {
    * @param {Object} [opts] Optional parameters for Google API
    * @param {Function} [cb] callback fallback support
    */
-  textsearch(opts = {}, cb) {
+  textsearch(opts = {}, cb = () => { }) {
     const params = this._permitParams(API.TEXT_SEARCH, opts);
 
     return new Promise((res, rej) => {
@@ -244,7 +244,7 @@ export class GooglePlaces {
    * @param {Object} [opts] Optional parameters for Google API
    * @param {Function} [cb] callback fallback support
    */
-  radarsearch(opts = {}, cb) {
+  radarsearch(opts = {}, cb = () => { }) {
     const params = this._permitParams(API.RADAR_SEARCH, opts);
 
     if (!params.name && !params.keyword && !params.type) {

@@ -11,7 +11,7 @@ export default [
   // the `targets` option which can specify `dest` and `format`)
   {
     input: 'src/google/index.js',
-    // external: pkg.dependencies,
+    external: ['axios'],
     output: [
       { file: pkg.main, format: 'cjs', strict: true },
       { file: pkg.module, format: 'es', strict: true },

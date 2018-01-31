@@ -23,7 +23,6 @@ export class GooglePlaces {
     }
 
     this._apiKey = apiKey;
-    this._log(`API KEY set`, apiKey);
   }
 
   get apiKey() {
@@ -81,7 +80,7 @@ export class GooglePlaces {
       return p;
     }, {});
 
-    this._log('google-places-web (params): ', JSON.stringify(params));
+    this._log('google-places-web (params)', JSON.stringify(params));
     return Object.assign({}, filteredRequiredParams, filteredOptionalParams);
   }
 
@@ -93,7 +92,7 @@ export class GooglePlaces {
    */
   _log(title, message) {
     if (this._debug) {
-      console.log(title || 'google-places-web:', message);
+      console.log(title || 'google-places-web', message);
     }
   }
 
@@ -120,7 +119,7 @@ export class GooglePlaces {
 
     const parts = QueryString.stringify(params);
     const query = `${uri}&${parts}`;
-    this._log('google-places-web (query): ', query);
+    this._log('google-places-web (query)', query);
     return query;
   }
 
@@ -135,16 +134,15 @@ export class GooglePlaces {
     const query = this._buildUri(path, params);
     return placesAxios.get(query)
       .then(response => {
-        if (response.statusText === 'OK') {
-          const json = response.data;
-          this._log('JSON', JSON.stringify(json));
-          if (json.status !== 'OK') {
-            throw new Error(json.status);
-          } else {
-            return json;
-          }
+        const { data } = response;
+        this._log('google-places-web (data)', data);
+        if (data.status !== 'OK') {
+          throw new Error(data.status);
         }
-        throw new Error(`HTTP ${response.status}`);
+        return data;
+      })
+      .catch(error => {
+        throw error;
       });
   }
 

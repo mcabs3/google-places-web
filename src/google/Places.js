@@ -149,118 +149,62 @@ export class GooglePlaces {
   /**
    * Retrieves a list of predictions of a partial address
    * @param {Object} [opts] Optional parameters for Google API
-   * @param {Function} [cb] callback fallback support
    * @returns {Promise}
    */
-  autocomplete(opts, cb = () => { }) {
+  autocomplete(opts) {
     const params = this._permitParams(API.AUTOCOMPLETE, opts);
-    return new Promise((res, rej) => {
-      return this._query(API.AUTOCOMPLETE.path, params)
-        .then(res => res.predictions)
-        .then(predictions => {
-          res(predictions);
-          return cb(null, predictions);
-        })
-        .catch(e => {
-          rej(e);
-          return cb(e);
-        });
-    });
-
+    return this._query(API.AUTOCOMPLETE.path, params)
+      .then(res => res.predictions);
   }
 
   /**
    * Retrieve the details of a Google Place based on the Place ID
    * @param {Object} [opts] Optional parameters for Google API
-   * @param {Function} [cb] callback fallback support
    * @returns {Promise}
    */
-  details(opts, cb = () => { }) {
-    return new Promise((res, rej) => {
-      const params = this._permitParams(API.DETAILS, opts);
-      return this._query(API.DETAILS.path, params)
-        .then(json => {
-          res(json.result);
-          return cb(null, json.result);
-        })
-        .catch(e => {
-          rej(e);
-          return cb(e);
-        });
-    });
-
+  details(opts) {
+    const params = this._permitParams(API.DETAILS, opts);
+    return this._query(API.DETAILS.path, params)
+      .then(json => json.result);
   }
 
   /**
    *
    * @param {Object} [opts] Optional parameters for Google API
-   * @param {Function} [cb] callback fallback support
+   * @returns {Promise}
    */
-  nearbysearch(opts = {}, cb = () => { }) {
+  nearbysearch(opts = {}) {
     const params = this._permitParams(API.NEARBY_SEARCH, opts);
-
-    return new Promise((res, rej) => {
-      return this._query(API.NEARBY_SEARCH.path, params)
-        .then(res => res.results)
-        .then(results => {
-          res(results);
-          return cb(null, results);
-        })
-        .catch(e => {
-          rej(e);
-          return cb(e);
-        });
-    });
+    return this._query(API.NEARBY_SEARCH.path, params)
+      .then(res => res.results);
   }
 
   /**
    *
    * @param {Object} [opts] Optional parameters for Google API
-   * @param {Function} [cb] callback fallback support
    */
-  textsearch(opts = {}, cb = () => { }) {
+  textsearch(opts = {}) {
     const params = this._permitParams(API.TEXT_SEARCH, opts);
 
-    return new Promise((res, rej) => {
-      return this._query(API.TEXT_SEARCH.path, params)
-        .then(res => res.results)
-        .then(results => {
-          res(results);
-          return cb(null, results);
-        })
-        .catch(e => {
-          rej(e);
-          return cb(e);
-        });
-    });
-
+    return this._query(API.TEXT_SEARCH.path, params)
+      .then(res => res.results);
 
   }
 
   /**
    *
    * @param {Object} [opts] Optional parameters for Google API
-   * @param {Function} [cb] callback fallback support
+   * @returns {Promise}
    */
-  radarsearch(opts = {}, cb = () => { }) {
+  radarsearch(opts = {}) {
     const params = this._permitParams(API.RADAR_SEARCH, opts);
 
     if (!params.name && !params.keyword && !params.type) {
       throw new Error('Missing required parameter: [keyword, name, or type]');
     }
 
-    return new Promise((res, rej) => {
-      return this._query(API.RADAR_SEARCH.path, params)
-        .then(res => res.results)
-        .then(results => {
-          res(results);
-          return cb(null, results);
-        })
-        .catch(e => {
-          rej(e);
-          return cb(e);
-        });
-    });
+    return this._query(API.RADAR_SEARCH.path, params)
+      .then(res => res.results);
   }
 }
 

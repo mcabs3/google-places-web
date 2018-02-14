@@ -1,13 +1,9 @@
 # Google Places Web
-This library was created to provide the Google Place Web (JS) API to be accessible for React (Web & Native), and Node projects. There are already many other libraries that implement the Native SDKs, but this library will allow you to use the same library for both Web and Mobile experience.
-
-## THIS LIBRARY USES FETCH
-I am a big fan of the fetch api to make promise based network requests. For applications such as react native, you don't need to provide a fetch polyfill, however for node or the web (for full support), a fetch polyfill is required for this library to work.
+A promise-based wrapper for the Google Places JS SDK for Node and React Native.
 
 ## Installation
 
 ```shell
-// React Native, Web, Node
 yarn add google-places-web;
 npm i google-places-web -S
 ```

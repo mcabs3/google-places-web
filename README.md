@@ -22,7 +22,6 @@ Places.apiKey = '<API_KEY>';
 Places.debug = __DEV__; // boolean;
 ```
 
-
 ### [Places Autocomplete](https://developers.google.com/places/web-service/autocomplete)
 ```javascript
 let partialAddress = '1600 Pennsylv';

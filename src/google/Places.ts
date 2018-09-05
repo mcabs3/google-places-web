@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import QueryString from "query-string";
 import { API } from "./Constants";
 
@@ -6,8 +6,19 @@ const placesAxios = axios.create({
   baseURL: "https://maps.googleapis.com/maps/api/place"
 });
 
+interface IGooglePlacesConfig {
+  apiKey?: string;
+  debug?: boolean;
+}
+
 export class GooglePlaces {
-  constructor(opts = {}) {
+  // tslint:disable-next-line
+  private _apiKey?: string;
+
+  // tslint:disable-next-line
+  private _debug: boolean = false;
+
+  constructor(opts: IGooglePlacesConfig = {}) {
     const { apiKey, debug } = opts;
     this.apiKey = apiKey;
     this.debug = debug;
@@ -15,66 +26,64 @@ export class GooglePlaces {
 
   /**
    * Retrieves a list of predictions of a partial address
-   * @param {Object} [opts] Optional parameters for Google API
-   * @returns {Promise}
    */
-  public autocomplete(opts) {
+  public autocomplete(opts): Promise<any> {
     const params = this._permitParams(API.AUTOCOMPLETE, opts);
     return this._query(API.AUTOCOMPLETE.path, params).then(
-      res => res.predictions
+      (res: any) => res.predictions
     );
   }
 
   /**
    * Retrieve the details of a Google Place based on the Place ID
-   * @param {Object} [opts] Optional parameters for Google API
-   * @returns {Promise}
    */
   public details(opts) {
     const params = this._permitParams(API.DETAILS, opts);
-    return this._query(API.DETAILS.path, params).then(json => json.result);
+    return this._query(API.DETAILS.path, params).then(
+      (json: any) => json.result
+    );
   }
 
   /**
-   *
-   * @param {Object} [opts] Optional parameters for Google API
-   * @returns {Promise}
+   * Google API Nearby Search
    */
-  public nearbysearch(opts = {}) {
+  public nearbysearch(opts = {}): Promise<any> {
     const params = this._permitParams(API.NEARBY_SEARCH, opts);
-    return this._query(API.NEARBY_SEARCH.path, params).then(res => res.results);
+    return this._query(API.NEARBY_SEARCH.path, params).then(
+      (res: any) => res.results
+    );
   }
 
   /**
-   *
-   * @param {Object} [opts] Optional parameters for Google API
+   * Google API Text Search
    */
-  public textsearch(opts = {}) {
+  public textsearch(opts = {}): Promise<any> {
     const params = this._permitParams(API.TEXT_SEARCH, opts);
 
-    return this._query(API.TEXT_SEARCH.path, params).then(res => res.results);
+    return this._query(API.TEXT_SEARCH.path, params).then(
+      (res: any) => res.results
+    );
   }
 
   /**
-   *
-   * @param {Object} [opts] Optional parameters for Google API
-   * @returns {Promise}
+   * Google API Radar Search
    */
-  public radarsearch(opts = {}) {
+  public radarsearch(opts = {}): Promise<any> {
     const params = this._permitParams(API.RADAR_SEARCH, opts);
 
     if (!params.name && !params.keyword && !params.type) {
       throw new Error("Missing required parameter: [keyword, name, or type]");
     }
 
-    return this._query(API.RADAR_SEARCH.path, params).then(res => res.results);
+    return this._query(API.RADAR_SEARCH.path, params).then(
+      (res: any) => res.results
+    );
   }
 
   /**
    * Set the Google API Key from the Developer Console
-   * @param {string} apiKey The Google API key
    */
-  set apiKey(apiKey) {
+  set apiKey(apiKey: string) {
     if (apiKey && (typeof apiKey !== "string" || !apiKey.match(/^[^\s]+$/gi))) {
       throw new Error("Invalid API Key");
     }
@@ -82,7 +91,7 @@ export class GooglePlaces {
     this._apiKey = apiKey;
   }
 
-  get apiKey() {
+  get apiKey(): string {
     return this._apiKey;
   }
 
@@ -90,19 +99,20 @@ export class GooglePlaces {
    * Set debugging mode which will log events
    * @param {boolean} isDebug true or false to enable debug mode
    */
-  set debug(isDebug) {
+  set debug(isDebug: boolean) {
     this._debug = isDebug;
   }
 
   /**
    * Parse through a params object creating URI Components
-   * @param {Array} config.requiredKeys Required params needed for the request
-   * @param {Array} [config.optionalKeys] Optional params that are allowed optionally
-   * @param {Object} params The params hash to parse
-   * @returns {Object} A filtered hash of valid params
-   * @private
    */
-  private _permitParams({ requiredKeys, optionalKeys }, params) {
+  private _permitParams(
+    {
+      requiredKeys,
+      optionalKeys
+    }: { requiredKeys: string[]; optionalKeys: string[] },
+    params: object
+  ): object {
     // Validate required keys are present
     if (!requiredKeys || !requiredKeys.length) {
       throw new Error("No required params defined");
@@ -110,11 +120,11 @@ export class GooglePlaces {
       throw new Error("No parameters provided");
     }
 
-    const missingKeys = [];
+    const missingKeys: string[] = [];
 
     // Filter required params
-    const filteredRequiredParams = requiredKeys.reduce((p, key) => {
-      const param = params[key];
+    const filteredRequiredParams = requiredKeys.reduce((p, key: string) => {
+      const param: string = params[key];
       if (param) {
         p[key] = param;
       } else {
@@ -128,7 +138,7 @@ export class GooglePlaces {
     }
 
     // Filter optional params
-    const filteredOptionalParams = optionalKeys.reduce((p, key) => {
+    const filteredOptionalParams = optionalKeys.reduce((p, key: string) => {
       const param = params[key];
       if (param) {
         p[key] = param;
@@ -137,29 +147,23 @@ export class GooglePlaces {
     }, {});
 
     this._log("google-places-web (params)", JSON.stringify(params));
-    return Object.assign({}, filteredRequiredParams, filteredOptionalParams);
+    return { ...filteredOptionalParams, ...filteredRequiredParams };
   }
 
   /**
    * Logs messages based on the _debug
-   * @param {string} title
-   * @param {string} message
-   * @private
    */
-  private _log(title, message) {
+  private _log(title: string, message: string): void {
     if (this._debug) {
-      console.log(title || "google-places-web", message);
+      // tslint:disable-next-line
+      console.log(title, message);
     }
   }
 
   /**
    * helper method to build the query uri
-   * @param {string} path
-   * @param {Object} params The parmas to stringify to the url
-   * @returns {string} a uri with attached parameters
-   * @private
    */
-  private _buildUri(path, params) {
+  private _buildUri(path: string, params: any): string {
     if (!this._apiKey) {
       throw new Error("Invalid API key");
     } else if (!path) {
@@ -177,17 +181,13 @@ export class GooglePlaces {
   }
 
   /**
-   *
-   * @param {string} path The API Path for the query
-   * @param {Object} params The parameters to concatinate into the url
-   * @returns {Promise}
-   * @private
+   * Performs the HTTP Request
    */
-  private _query(path, params) {
+  private _query(path: string, params: object): Promise<any> {
     const query = this._buildUri(path, params);
     return placesAxios
       .get(query)
-      .then(response => {
+      .then((response: AxiosResponse) => {
         const { data } = response;
         this._log("google-places-web (data)", data);
         if (data.status !== "OK") {
@@ -195,7 +195,7 @@ export class GooglePlaces {
         }
         return data;
       })
-      .catch(error => {
+      .catch((error: Error) => {
         throw error;
       });
   }

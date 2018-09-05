@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "removeComments": true,
+    "noImplicitAny": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES5",
+    "inlineSourceMap": true,
+    "declarationDir": "dist"
+  },
+  "include": ["src/**/*.ts"]
+}

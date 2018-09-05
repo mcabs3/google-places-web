@@ -24,7 +24,7 @@ export const API = {
       "types",
       "strictbounds",
       "components",
-    ]
+    ],
     path: "autocomplete",
     requiredKeys: ["input"],
   },
@@ -59,7 +59,7 @@ export const API = {
       "name",
       "opennow",
       "type",
-    ]
+    ],
     path: "radarsearch",
     requiredKeys: ["location", "radius"],
   },

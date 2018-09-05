@@ -3,7 +3,8 @@ __test__/
 *.spec.js
 *.html
 .babelrc
-.eslintrc
+.tslint.json
 yarn-error.log
 .idea
 .editorconfig
+.cache/

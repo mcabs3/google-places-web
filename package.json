@@ -9,8 +9,8 @@
     "test": "jest",
     "test:watch": "jest --verbose --watch",
     "compile": "yarn build",
-    "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "build": "parcel build ./src/google/index.ts --target node --no-source-maps",
+    "dev": "parcel build --watch"
   },
   "repository": {
     "type": "git",
@@ -27,24 +27,16 @@
   "author": "Miguel Caballero <mcabs3@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "babel-eslint": "^8.2.1",
-    "babel-jest": "^22.1.0",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-env": "^1.6.1",
-    "eslint": "^4.1.1",
-    "eslint-plugin-jest": "^21.7.0",
     "jest": "^22.1.4",
-    "rollup": "^0.55.0",
-    "rollup-plugin-babel": "^3.0.3",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "^3.0.2",
-    "rollup-watch": "^4.3.1"
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "axios": "^0.17.1",
+    "parcel-bundler": "^1.9.7",
     "query-string": "^5.0.1"
   }
 }

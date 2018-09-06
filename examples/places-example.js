@@ -1,5 +1,5 @@
+const Places = require("../dist/index").default;
 try {
-  const Places = require("../dist/index").default;
   const apiKey = process.env.PLACES_API_KEY;
   if (!apiKey) {
     throw new Error("Missing PLACES_API_KEY env variable");

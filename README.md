@@ -51,24 +51,15 @@ Places.details({ placeid: whiteHousePlaceID })
 ```
 
 ## Full Example
+Make sure you have the lib built with `npm run build` or `yarn build`. That should create your `dist/` directory.
 
-```javascript
-import Places from "google-places-web";
-Places.apiKey = "<API_KEY>";
-Places.debug = true;
-
-Places.autocomplete({ input: "1600 Pennsylvania Ave" })
-  .then(places => places[0] || {})
-  .then(
-    place => (place.place_id ? Places.details({ placeid: place.place_id }) : {})
-  )
-  .then(details => {
-    console.log(JSON.stringify(details, null, 2));
-  })
-  .catch(e => console.log(e.message));
+```shell
+> npm run build
+> PLACES_API_KEY=<your_key_here> node examples/places-example.js
 ```
 
 ## Troubleshooting
+Feel free to file issues as you see fit, and always looking for collaborators to help make this better.
 
 ## Errors
 

@@ -8,3 +8,4 @@ yarn-error.log
 .idea
 .editorconfig
 .cache/
+examples/

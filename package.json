@@ -2,9 +2,7 @@
   "name": "google-places-web",
   "version": "0.1.7",
   "description": "A simple wrapper for the Google Places Web API",
-  "main": "dist/google-places-web.cjs.js",
-  "module": "dist/google-places-web.esm.js",
-  "browser": "dist/google-places-web.umd.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --verbose --watch",

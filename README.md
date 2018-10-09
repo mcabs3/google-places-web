@@ -55,9 +55,9 @@ Places.details({ placeid: whiteHousePlaceID })
 ```javascript
 Places.nearbysearch({
   location: "-37.814,144.96332", // LatLon delimited by ,
-  radius: "500",  // Radius can be used if rankBy isn't set to using DISTANCE object
+  // radius: "500",  // Radius cannot be used if rankBy set to DISTANCE
   type: [], // Undefined type will return all types
-  rankBy: "distance", // See google docs for different possible values
+  rankby: "distance", // See google docs for different possible values
 }).then(result => {
   // result object
   })

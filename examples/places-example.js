@@ -32,6 +32,19 @@ try {
       console.log("Places Results");
       console.log("####################");
       console.log("Place", result.name);
+
+      const nearbySearchResults = await Places.nearbysearch({
+          location: "-37.814,144.96332",
+          rankby: "distance",
+          type: [],
+      });
+      console.log("\n####################");
+      console.log("Nearby Search Results");
+      console.log("####################");
+      nearbySearchResults.map((result, idx) => {
+          console.log(idx, result.name);
+      });
+
     } catch (error) {
       console.log("Error", error);
     }

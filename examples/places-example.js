@@ -6,6 +6,7 @@ try {
   }
 
   Places.apiKey = apiKey;
+  Places.debug = true;
   console.log("Set API Key", Places.apiKey);
 
   async function run() {
@@ -34,17 +35,16 @@ try {
       console.log("Place", result.name);
 
       const nearbySearchResults = await Places.nearbysearch({
-          location: "-37.814,144.96332",
-          rankby: "distance",
-          type: [],
+        location: "-37.814,144.96332",
+        rankby: "distance",
+        type: []
       });
       console.log("\n####################");
       console.log("Nearby Search Results");
       console.log("####################");
       nearbySearchResults.map((result, idx) => {
-          console.log(idx, result.name);
+        console.log(idx, result.name);
       });
-
     } catch (error) {
       console.log("Error", error);
     }
@@ -52,10 +52,10 @@ try {
 
   run();
 } catch (error) {
-  if (error.message === 'Missing PLACES_API_KEY env variable') {
+  if (error.message === "Missing PLACES_API_KEY env variable") {
     console.log(error.message);
-    console.log('\tTo run the example:')
-    console.log('\tPLACES_API_KEY=<your_key_here> node places-example.js');
+    console.log("\tTo run the example:");
+    console.log("\tPLACES_API_KEY=<your_key_here> node places-example.js");
   } else {
     console.log(error);
   }

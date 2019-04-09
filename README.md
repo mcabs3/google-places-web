@@ -1,6 +1,6 @@
 # Google Places Web
 
-A promise-based wrapper for the Google Places JS SDK for Node (and React Native).
+A promise-based wrapper for the Google Places JS SDK for Node.
 
 ## Installation
 
@@ -57,13 +57,16 @@ Places.nearbysearch({
   location: "-37.814,144.96332", // LatLon delimited by ,
   // radius: "500",  // Radius cannot be used if rankBy set to DISTANCE
   type: [], // Undefined type will return all types
-  rankby: "distance", // See google docs for different possible values
-}).then(result => {
-  // result object
+  rankby: "distance" // See google docs for different possible values
+})
+  .then(result => {
+    // result object
   })
   .catch(e => console.log(e));
 ```
+
 ## Full Example
+
 Make sure you have the lib built with `npm run build` or `yarn build`. That should create your `dist/` directory.
 
 ```shell
@@ -72,6 +75,7 @@ Make sure you have the lib built with `npm run build` or `yarn build`. That shou
 ```
 
 ## Troubleshooting
+
 Feel free to file issues as you see fit, and always looking for collaborators to help make this better.
 
 ## Errors

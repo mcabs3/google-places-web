@@ -6,9 +6,9 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --verbose --watch",
-    "compile": "yarn build",
-    "build": "parcel build ./src/google/index.ts --target node --no-source-maps",
-    "dev": "parcel build --watch"
+    "compile": "npm run build",
+    "build": "parcel build ./src/google/index.ts --target node --no-minify",
+    "dev": "parcel ./src/google/index.ts"
   },
   "repository": {
     "type": "git",
@@ -25,16 +25,16 @@
   "author": "Miguel Caballero <mcabs3@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^22.1.4",
-    "tslint": "^5.11.0",
-    "typescript": "^3.0.3",
-    "parcel-bundler": "^1.9.7"
+    "@types/superagent": "^4.1.1",
+    "jest": "24.7.0",
+    "parcel-bundler": "1.12.3",
+    "tslint": "5.15.0",
+    "typescript": "3.4.1"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "axios": "^0.17.1",
-    "query-string": "^5.0.1"
+    "superagent": "^5.0.2"
   }
 }

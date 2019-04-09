@@ -11,10 +11,20 @@ export const PlaceTypes = {
   LOCALITY: "locality",
   POSTAL_CODE: "postal_code",
   REGIONS: "(regions)",
-  SUBLOCALITY: "sublocality",
+  SUBLOCALITY: "sublocality"
 };
 
-export const API = {
+export interface GoogleMapsApiOptions {
+  readonly optionalKeys: string[];
+  readonly requiredKeys: string[];
+  readonly path: string;
+}
+
+interface ApiMap {
+  readonly [key: string]: GoogleMapsApiOptions;
+}
+
+export const API: ApiMap = {
   AUTOCOMPLETE: {
     optionalKeys: [
       "offset",
@@ -24,15 +34,15 @@ export const API = {
       "types",
       "strictbounds",
       "components",
-      "sessiontoken",
+      "sessiontoken"
     ],
     path: "autocomplete",
-    requiredKeys: ["input"],
+    requiredKeys: ["input"]
   },
   DETAILS: {
     optionalKeys: ["language", "sessiontoken"],
     path: "details",
-    requiredKeys: ["placeid"],
+    requiredKeys: ["placeid"]
   },
   NEARBY_SEARCH: {
     optionalKeys: [
@@ -46,10 +56,10 @@ export const API = {
       "rankby",
       "type",
       "pagetoken",
-      "region",
+      "region"
     ],
     path: "nearbysearch",
-    requiredKeys: ["location"],
+    requiredKeys: ["location"]
   },
   RADAR_SEARCH: {
     optionalKeys: [
@@ -59,10 +69,10 @@ export const API = {
       "maxprice",
       "name",
       "opennow",
-      "type",
+      "type"
     ],
     path: "radarsearch",
-    requiredKeys: ["location", "radius"],
+    requiredKeys: ["location", "radius"]
   },
   TEXT_SEARCH: {
     optionalKeys: [
@@ -73,9 +83,9 @@ export const API = {
       "maxprice",
       "opennow",
       "pagetoken",
-      "type",
+      "type"
     ],
     path: "textsearch",
-    requiredKeys: ["query"],
-  },
+    requiredKeys: ["query"]
+  }
 };

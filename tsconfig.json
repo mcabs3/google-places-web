@@ -2,12 +2,25 @@
   "compilerOptions": {
     "module": "commonjs",
     "removeComments": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
     "noImplicitAny": true,
+    "baseUrl": "./src",
+    "strictNullChecks": true,
     "declaration": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES5",
-    "inlineSourceMap": true,
-    "declarationDir": "dist"
+    "keyofStringsOnly": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "target": "es5",
+    "declarationDir": "dist",
+    "types": ["node"],
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "noUnusedParameters": true,
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "rootDir": "src"
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src"]
 }

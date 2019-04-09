@@ -25,57 +25,52 @@ export class GooglePlaces {
   /**
    * Retrieves a list of predictions of a partial address
    */
-  public autocomplete(opts: GooglePlacesOptions): Promise<any> {
+  public async autocomplete(opts: GooglePlacesOptions): Promise<any> {
     const params = this._permitParams(API.AUTOCOMPLETE, opts);
-    return this._query(API.AUTOCOMPLETE.path, params).then(
-      (res: any) => res.predictions
-    );
+    const res = await this._query(API.AUTOCOMPLETE.path, params);
+    return res.predictions;
   }
 
   /**
    * Retrieve the details of a Google Place based on the Place ID
    */
-  public details(opts: GooglePlacesOptions) {
+  public async details(opts: GooglePlacesOptions) {
     const params = this._permitParams(API.DETAILS, opts);
-    return this._query(API.DETAILS.path, params).then(
-      (json: any) => json.result
-    );
+    const json = await this._query(API.DETAILS.path, params);
+    return json.result;
   }
 
   /**
    * Google API Nearby Search
    */
-  public nearbysearch(opts: GooglePlacesOptions = {}): Promise<any> {
+  public async nearbysearch(opts: GooglePlacesOptions = {}): Promise<any> {
     const params = this._permitParams(API.NEARBY_SEARCH, opts);
-    return this._query(API.NEARBY_SEARCH.path, params).then(
-      (res: any) => res.results
-    );
+    const res = await this._query(API.NEARBY_SEARCH.path, params);
+    return res.results;
   }
 
   /**
    * Google API Text Search
    */
-  public textsearch(opts: GooglePlacesOptions = {}): Promise<any> {
+  public async textsearch(opts: GooglePlacesOptions = {}): Promise<any> {
     const params = this._permitParams(API.TEXT_SEARCH, opts);
 
-    return this._query(API.TEXT_SEARCH.path, params).then(
-      (res: any) => res.results
-    );
+    const res = await this._query(API.TEXT_SEARCH.path, params);
+    return res.results;
   }
 
   /**
    * Google API Radar Search
    */
-  public radarsearch(opts: GooglePlacesOptions = {}): Promise<any> {
+  public async radarsearch(opts: GooglePlacesOptions = {}): Promise<any> {
     const params: any = this._permitParams(API.RADAR_SEARCH, opts);
 
     if (!params.name && !params.keyword && !params.type) {
       throw new Error("Missing required parameter: [keyword, name, or type]");
     }
 
-    return this._query(API.RADAR_SEARCH.path, params).then(
-      (res: any) => res.results
-    );
+    const res = await this._query(API.RADAR_SEARCH.path, params);
+    return res.results;
   }
 
   /**

@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
     "module": "commonjs",
     "removeComments": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "strictNullChecks": true,
     "declaration": true,
     "keyofStringsOnly": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
-    "target": "es5",
+    "target": "es6",
     "declarationDir": "dist",
     "types": ["node"],
     "sourceMap": true,
@@ -21,5 +22,6 @@
     "downlevelIteration": true,
     "rootDir": "src"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

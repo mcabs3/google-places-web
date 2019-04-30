@@ -2,13 +2,17 @@
   "name": "google-places-web",
   "version": "0.2.0",
   "description": "A simple wrapper for the Google Places Web API",
-  "main": "dist/index.js",
+  "main": "dist/google/index.js",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --verbose --watch",
     "compile": "npm run build",
-    "build": "parcel build ./src/google/index.ts --target node --no-minify",
-    "dev": "parcel ./src/google/index.ts"
+    "build": "tsc"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
   },
   "repository": {
     "type": "git",
@@ -28,7 +32,6 @@
     "@types/superagent": "^4.1.1",
     "husky": "^1.3.1",
     "jest": "24.7.0",
-    "parcel-bundler": "1.12.3",
     "tslint": "5.15.0",
     "typescript": "3.4.1"
   },

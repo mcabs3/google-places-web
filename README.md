@@ -1,6 +1,6 @@
 # Google Places Web
 
-A promise-based implementation integration with Google Places for Node or server-side JS platforms.
+A promise-based implementation integration with [Google Places for Node](https://developers.google.com/places/web-service/search) or server-side JS platforms. This cannot be used as a front-end solution (Angular/React/Vue/Vanilla, etc) because Google has provided their own [JS SDK](https://developers.google.com/maps/documentation/javascript/places)
 
 ## Installation
 

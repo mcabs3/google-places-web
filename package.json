@@ -1,6 +1,6 @@
 {
   "name": "google-places-web",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A simple wrapper for the Google Places Web API",
   "main": "dist/google/index.js",
   "scripts": {

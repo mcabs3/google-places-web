@@ -1,6 +1,6 @@
 # Google Places Web
 
-A promise-based wrapper for the Google Places JS SDK for Node.
+A promise-based implementation integration with Google Places for Node or server-side JS platforms.
 
 ## Installation
 

@@ -14,47 +14,79 @@ const GOOGLE_MAPS_API_TARGET = "https://maps.googleapis.com/maps/api/place";
 class GooglePlaces {
     constructor(opts = { debug: false }) {
         this._debug = false;
-        const { apiKey, debug } = opts;
-        this.apiKey = apiKey;
-        this.debug = debug;
-    }
-    autocomplete(opts) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.autocomplete = (opts) => __awaiter(this, void 0, void 0, function* () {
             const params = this._permitParams(Constants_1.API.AUTOCOMPLETE, opts);
             const res = yield this._query(Constants_1.API.AUTOCOMPLETE.path, params);
-            return res.predictions;
+            return res.body;
         });
-    }
-    details(opts) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.queryautocomplete = (opts) => __awaiter(this, void 0, void 0, function* () {
+            const params = this._permitParams(Constants_1.API.AUTOCOMPLETE, opts);
+            const res = yield this._query(Constants_1.API.AUTOCOMPLETE.path, params);
+            return res.body;
+        });
+        this.details = (opts) => __awaiter(this, void 0, void 0, function* () {
             const params = this._permitParams(Constants_1.API.DETAILS, opts);
-            const json = yield this._query(Constants_1.API.DETAILS.path, params);
-            return json.result;
+            const res = yield this._query(Constants_1.API.DETAILS.path, params);
+            return res.body;
         });
-    }
-    nearbysearch(opts = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.nearbysearch = (opts = {}) => __awaiter(this, void 0, void 0, function* () {
             const params = this._permitParams(Constants_1.API.NEARBY_SEARCH, opts);
             const res = yield this._query(Constants_1.API.NEARBY_SEARCH.path, params);
-            return res.results;
+            return res.body;
         });
-    }
-    textsearch(opts = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.textsearch = (opts = {}) => __awaiter(this, void 0, void 0, function* () {
             const params = this._permitParams(Constants_1.API.TEXT_SEARCH, opts);
             const res = yield this._query(Constants_1.API.TEXT_SEARCH.path, params);
-            return res.results;
+            return res.body;
         });
-    }
-    radarsearch(opts = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.radarsearch = (opts = {}) => __awaiter(this, void 0, void 0, function* () {
             const params = this._permitParams(Constants_1.API.RADAR_SEARCH, opts);
             if (!params.name && !params.keyword && !params.type) {
                 throw new Error("Missing required parameter: [keyword, name, or type]");
             }
             const res = yield this._query(Constants_1.API.RADAR_SEARCH.path, params);
-            return res.results;
+            return res.body;
         });
+        this._googleApiRequest = (url, params) => __awaiter(this, void 0, void 0, function* () {
+            const target = `${GOOGLE_MAPS_API_TARGET}${url}`;
+            this._log(`GPW:REQ ${target}`, JSON.stringify(Object.assign({}, params)));
+            return yield superagent.get(target).query(Object.assign({ key: this.apiKey }, params));
+        });
+        this._permitParams = ({ requiredKeys, optionalKeys }, params) => {
+            if (!requiredKeys || !requiredKeys.length) {
+                throw new Error("No required params defined");
+            }
+            else if (!params) {
+                throw new Error("No parameters provided");
+            }
+            const missingKeys = [];
+            const filteredRequiredParams = requiredKeys.reduce((p, key) => {
+                const param = params[key];
+                if (param) {
+                    p[key] = param;
+                }
+                else {
+                    missingKeys.push(key);
+                }
+                return p;
+            }, {});
+            if (missingKeys.length) {
+                throw new Error(`Missing required params: [${missingKeys.join(", ")}]`);
+            }
+            const filteredOptionalParams = optionalKeys.reduce((p, key) => {
+                const param = params[key];
+                if (param) {
+                    p[key] = param;
+                }
+                return p;
+            }, {});
+            this._log("GPW:PARAMS", JSON.stringify(params));
+            return Object.assign({}, filteredOptionalParams, filteredRequiredParams);
+        };
+        const { apiKey, debug } = opts;
+        this.apiKey = apiKey;
+        this.debug = debug;
+        this._query = this._query.bind(this);
     }
     set apiKey(apiKey) {
         if (apiKey && (typeof apiKey !== "string" || !apiKey.match(/^[^\s]+$/gi))) {
@@ -67,42 +99,6 @@ class GooglePlaces {
     }
     set debug(isDebug) {
         this._debug = isDebug;
-    }
-    _googleApiRequest(url, params) {
-        const target = `${GOOGLE_MAPS_API_TARGET}${url}`;
-        this._log(`GPW:REQ ${target}`, JSON.stringify(Object.assign({}, params)));
-        return superagent.get(target).query(Object.assign({ key: this.apiKey }, params));
-    }
-    _permitParams({ requiredKeys, optionalKeys }, params) {
-        if (!requiredKeys || !requiredKeys.length) {
-            throw new Error("No required params defined");
-        }
-        else if (!params) {
-            throw new Error("No parameters provided");
-        }
-        const missingKeys = [];
-        const filteredRequiredParams = requiredKeys.reduce((p, key) => {
-            const param = params[key];
-            if (param) {
-                p[key] = param;
-            }
-            else {
-                missingKeys.push(key);
-            }
-            return p;
-        }, {});
-        if (missingKeys.length) {
-            throw new Error(`Missing required params: [${missingKeys.join(", ")}]`);
-        }
-        const filteredOptionalParams = optionalKeys.reduce((p, key) => {
-            const param = params[key];
-            if (param) {
-                p[key] = param;
-            }
-            return p;
-        }, {});
-        this._log("GPW:PARAMS", JSON.stringify(params));
-        return Object.assign({}, filteredOptionalParams, filteredRequiredParams);
     }
     _log(title, message) {
         if (this._debug) {
@@ -122,12 +118,12 @@ class GooglePlaces {
             }
             try {
                 const response = yield this._googleApiRequest(`/${path}/json`, params);
-                const { body } = response;
+                const body = response.body;
                 this._log("GPW:RES", body);
                 if (body.status !== "OK") {
                     throw new Error(body.status);
                 }
-                return body;
+                return response;
             }
             catch (error) {
                 throw error;

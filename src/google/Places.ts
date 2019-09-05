@@ -3,13 +3,8 @@ import { API } from "./Constants";
 
 const GOOGLE_MAPS_API_TARGET = "https://maps.googleapis.com/maps/api/place";
 
-interface IGooglePlacesConfig {
-  apiKey?: string;
-  debug: boolean;
-}
-
-export interface GooglePlacesOptions {
-  [key: string]: any;
+interface GoogleResponse<T = any> extends superagent.Response {
+  body: T
 }
 
 export class GooglePlaces {
@@ -20,57 +15,70 @@ export class GooglePlaces {
     const { apiKey, debug } = opts;
     this.apiKey = apiKey;
     this.debug = debug;
+
+    this._query = this._query.bind(this);
   }
 
   /**
    * Retrieves a list of predictions of a partial address
    */
-  public async autocomplete(opts: GooglePlacesOptions): Promise<any> {
+  public autocomplete = async (opts?: GooglePlacesAutocompleteOpts): Promise<GooglePlaceAutocompleteResponse> => {
     const params = this._permitParams(API.AUTOCOMPLETE, opts);
-    const res = await this._query(API.AUTOCOMPLETE.path, params);
-    return res.predictions;
+    const res = await this._query<GoogleResponse<GooglePlaceAutocompleteResponse>>(API.AUTOCOMPLETE.path, params);
+    return res.body;
+  }
+
+  /**
+   * Retrieves a list of predictions of a partial search
+   * 
+   * ex. "Pizza in Chicago"
+   */
+  public queryautocomplete = async (opts?: GooglePlacesQueryAutocompleteOpts): Promise<GooglePlaceQueryAutocompleteResponse> => {
+    const params = this._permitParams(API.AUTOCOMPLETE, opts);
+    const res = await this._query<GoogleResponse<GooglePlaceQueryAutocompleteResponse>>(API.AUTOCOMPLETE.path, params);
+    return res.body;
   }
 
   /**
    * Retrieve the details of a Google Place based on the Place ID
    */
-  public async details(opts: GooglePlacesOptions) {
+  public details = async (opts?: GooglePlacesDetailsOpts): Promise<GooglePlaceDetailsResponse> => {
     const params = this._permitParams(API.DETAILS, opts);
-    const json = await this._query(API.DETAILS.path, params);
-    return json.result;
+    const res = await this._query<GoogleResponse<GooglePlaceDetailsResponse>>(API.DETAILS.path, params);
+    return res.body;
   }
 
   /**
    * Google API Nearby Search
    */
-  public async nearbysearch(opts: GooglePlacesOptions = {}): Promise<any> {
+  public nearbysearch = async (opts?: GooglePlacesNearbySearchOpts): Promise<GooglePlaceNearbySearchResponse> => {
     const params = this._permitParams(API.NEARBY_SEARCH, opts);
-    const res = await this._query(API.NEARBY_SEARCH.path, params);
-    return res.results;
+    const res = await this._query<GoogleResponse<GooglePlaceNearbySearchResponse>>(API.NEARBY_SEARCH.path, params);
+    return res.body;
   }
 
   /**
    * Google API Text Search
    */
-  public async textsearch(opts: GooglePlacesOptions = {}): Promise<any> {
+  public textsearch = async (opts?: GooglePlacesTextSearchOpts): Promise<GooglePlaceTextSearchResponse> => {
     const params = this._permitParams(API.TEXT_SEARCH, opts);
-
-    const res = await this._query(API.TEXT_SEARCH.path, params);
-    return res.results;
+    const res = await this._query<GoogleResponse<GooglePlaceTextSearchResponse>>(API.TEXT_SEARCH.path, params);
+    return res.body;
   }
 
   /**
    * Google API Radar Search
+   * @deprecated
    */
-  public async radarsearch(opts: GooglePlacesOptions = {}): Promise<any> {
+  public radarsearch = async (opts: GooglePlacesOptions = {}): Promise<GooglePlaceBaseResponse> => {
     const params: any = this._permitParams(API.RADAR_SEARCH, opts);
 
     if (!params.name && !params.keyword && !params.type) {
       throw new Error("Missing required parameter: [keyword, name, or type]");
     }
 
-    const res = await this._query(API.RADAR_SEARCH.path, params);
-    return res.results;
+    const res = await this._query<GoogleResponse<any>>(API.RADAR_SEARCH.path, params);
+    return res.body;
   }
 
   /**
@@ -96,26 +104,26 @@ export class GooglePlaces {
     this._debug = isDebug;
   }
 
-  private _googleApiRequest(url: string, params: object) {
+  private _googleApiRequest = async (url: string, params: object) => {
     const target = `${GOOGLE_MAPS_API_TARGET}${url}`;
     this._log(`GPW:REQ ${target}`, JSON.stringify({ ...params }));
-    return superagent.get(target).query({ key: this.apiKey, ...params });
+    return await superagent.get(target).query({ key: this.apiKey, ...params });
   }
 
   /**
    * Parse through a params object creating URI Components
    */
-  private _permitParams(
+  private _permitParams = (
     {
       requiredKeys,
       optionalKeys
     }: { requiredKeys: string[]; optionalKeys: string[] },
-    params: any
-  ): object {
+    params?: GooglePlacesOptions
+  ): object => {
     // Validate required keys are present
     if (!requiredKeys || !requiredKeys.length) {
       throw new Error("No required params defined");
-    } else if (!params) {
+    } else if (!params || Object.keys(params).length === 0) {
       throw new Error("No parameters provided");
     }
 
@@ -123,7 +131,7 @@ export class GooglePlaces {
 
     // Filter required params
     const filteredRequiredParams = requiredKeys.reduce(
-      (p: any, key: string) => {
+      (p: GooglePlacesOptions, key: string) => {
         const param: string = params[key];
         if (param) {
           p[key] = param;
@@ -135,13 +143,13 @@ export class GooglePlaces {
       {}
     );
 
-    if (missingKeys.length) {
+    if (missingKeys.length > 0) {
       throw new Error(`Missing required params: [${missingKeys.join(", ")}]`);
     }
 
     // Filter optional params
     const filteredOptionalParams = optionalKeys.reduce(
-      (p: any, key: string) => {
+      (p: GooglePlacesOptions, key: string) => {
         const param = params[key];
         if (param) {
           p[key] = param;
@@ -168,7 +176,7 @@ export class GooglePlaces {
   /**
    * Performs the HTTP Request
    */
-  private async _query(path: string, params: object): Promise<any> {
+  private async _query<T extends superagent.Response>(path: string, params: object): Promise<T> {
     if (!this._apiKey) {
       throw new Error("Invalid API key");
     } else if (!path) {
@@ -182,12 +190,12 @@ export class GooglePlaces {
         `/${path}/json`,
         params
       );
-      const { body } = response;
+      const body = response.body;
       this._log("GPW:RES", body);
       if (body.status !== "OK") {
         throw new Error(body.status);
       }
-      return body;
+      return response as T;
     } catch (error) {
       throw error;
     }

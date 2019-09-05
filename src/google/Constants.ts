@@ -27,14 +27,14 @@ interface ApiMap {
 export const API: ApiMap = {
   AUTOCOMPLETE: {
     optionalKeys: [
+      "components",
       "offset",
+      "language",
       "location",
       "radius",
-      "language",
-      "types",
+      "sessiontoken",
       "strictbounds",
-      "components",
-      "sessiontoken"
+      "types"
     ],
     path: "autocomplete",
     requiredKeys: ["input"]
@@ -46,20 +46,19 @@ export const API: ApiMap = {
   },
   NEARBY_SEARCH: {
     optionalKeys: [
-      "radius",
+      "bounds",
       "keyword",
-      "language",
-      "minprice",
+      "radius",
       "maxprice",
+      "minprice",
       "name",
       "opennow",
       "rankby",
       "type",
-      "pagetoken",
-      "region"
+      "pagetoken"
     ],
     path: "nearbysearch",
-    requiredKeys: ["location"]
+    requiredKeys: ["location", "radius"]
   },
   RADAR_SEARCH: {
     optionalKeys: [
@@ -76,14 +75,14 @@ export const API: ApiMap = {
   },
   TEXT_SEARCH: {
     optionalKeys: [
+      "bounds",
       "location",
-      "radius",
-      "language",
-      "minprice",
       "maxprice",
+      "minprice",
       "opennow",
-      "pagetoken",
-      "type"
+      "radius",
+      "type",
+      "pagetoken"
     ],
     path: "textsearch",
     requiredKeys: ["query"]

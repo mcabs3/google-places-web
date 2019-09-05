@@ -1,9 +1,8 @@
 src/
 __test__/
-*.spec.js
+*.spec.ts
 *.html
 .babelrc
-.tslint.json
 yarn-error.log
 .idea
 .editorconfig

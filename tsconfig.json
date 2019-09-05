@@ -14,14 +14,25 @@
     "noUnusedLocals": true,
     "target": "es6",
     "declarationDir": "dist",
-    "types": ["node"],
     "sourceMap": true,
     "experimentalDecorators": true,
     "strict": true,
     "noUnusedParameters": true,
     "downlevelIteration": true,
-    "rootDir": "src"
+    "rootDir": "src",
+    "types": [
+      "node",
+      "jest"
+    ],
+    "typeRoots": [
+      "src/@types",
+      "node_modules/@types"
+    ]
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

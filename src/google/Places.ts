@@ -1,5 +1,6 @@
 import * as superagent from "superagent";
 import { API } from "./Constants";
+import { IGooglePlacesConfig, GooglePlacesQueryAutocompleteOpts, GooglePlaceAutocompleteResponse, GooglePlaceQueryAutocompleteResponse, GooglePlaceDetailsResponse, GooglePlacesDetailsOpts, GooglePlacesNearbySearchOpts, GooglePlaceNearbySearchResponse, GooglePlaceTextSearchResponse, GooglePlacesTextSearchOpts, GooglePlaceBaseResponse, GooglePlacesOptions } from "./types";
 
 const GOOGLE_MAPS_API_TARGET = "https://maps.googleapis.com/maps/api/place";
 
@@ -22,7 +23,7 @@ export class GooglePlaces {
   /**
    * Retrieves a list of predictions of a partial address
    */
-  public autocomplete = async (opts?: GooglePlacesAutocompleteOpts): Promise<GooglePlaceAutocompleteResponse> => {
+  public autocomplete = async (opts?: GooglePlacesQueryAutocompleteOpts): Promise<GooglePlaceAutocompleteResponse> => {
     const params = this._permitParams(API.AUTOCOMPLETE, opts);
     const res = await this._query<GoogleResponse<GooglePlaceAutocompleteResponse>>(API.AUTOCOMPLETE.path, params);
     return res.body;
@@ -30,7 +31,7 @@ export class GooglePlaces {
 
   /**
    * Retrieves a list of predictions of a partial search
-   * 
+   *
    * ex. "Pizza in Chicago"
    */
   public queryautocomplete = async (opts?: GooglePlacesQueryAutocompleteOpts): Promise<GooglePlaceQueryAutocompleteResponse> => {

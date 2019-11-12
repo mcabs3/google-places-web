@@ -1,7 +1,8 @@
+
 /**
  * Configuration Options for the Constructor for GooglePlaces class
  */
-declare interface IGooglePlacesConfig {
+export interface IGooglePlacesConfig {
   apiKey?: string;
   debug: boolean;
 }
@@ -9,14 +10,14 @@ declare interface IGooglePlacesConfig {
 /**
  * Internally used to pass the query parameter key/value paris
  */
-declare interface GooglePlacesOptions {
+export interface GooglePlacesOptions {
   [key: string]: any;
 }
 
 /**
  * Internal use for details()
  */
-declare interface GooglePlacesDetailsOpts extends GooglePlacesOptions {
+export interface GooglePlacesDetailsOpts extends GooglePlacesOptions {
   placeid: string;
   language?: string;
   sessiontoken?: string;
@@ -26,7 +27,7 @@ declare interface GooglePlacesDetailsOpts extends GooglePlacesOptions {
  * Internal use for autocomplete()
  * Reference: https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompletionRequest
  */
-declare interface GooglePlacesAutocompleteOpts extends GooglePlacesOptions {
+export interface GooglePlacesAutocompleteOpts extends GooglePlacesOptions {
   components?: string;
   input: string;
   offset?: number;
@@ -42,7 +43,7 @@ declare interface GooglePlacesAutocompleteOpts extends GooglePlacesOptions {
  * Internal use for queryAutocomplete()
  * Reference: https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#QueryAutocompletePrediction
  */
-declare interface GooglePlacesQueryAutocompleteOpts extends GooglePlacesOptions {
+export interface GooglePlacesQueryAutocompleteOpts extends GooglePlacesOptions {
   bounds?: string;
   components?: string;
   input: string;
@@ -57,7 +58,7 @@ declare interface GooglePlacesQueryAutocompleteOpts extends GooglePlacesOptions 
  * Internal use for nearbysearch()
  * https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceSearchRequest
  */
-declare interface GooglePlacesNearbySearchOpts extends GooglePlacesOptions {
+export interface GooglePlacesNearbySearchOpts extends GooglePlacesOptions {
   bounds?: string;
   keyword?: string;
   location: string;
@@ -75,7 +76,7 @@ declare interface GooglePlacesNearbySearchOpts extends GooglePlacesOptions {
  * Internal use for textsearch()
  * https://developers.google.com/maps/documentation/javascript/reference/places-service#TextSearchRequest
  */
-declare interface GooglePlacesTextSearchOpts extends GooglePlacesOptions {
+export interface GooglePlacesTextSearchOpts extends GooglePlacesOptions {
   bounds?: string;
   location?: string;
   maxprice?: number;
@@ -93,7 +94,7 @@ interface BaseGoogleResult {
 /**
  * Object that has Latitude and Longitude coordinates
  */
-declare interface GooglePlaceLatLng {
+export interface GooglePlaceLatLng {
   lat: number;
   lng: number;
 }
@@ -101,7 +102,7 @@ declare interface GooglePlaceLatLng {
 /**
  * Google Place Address Component Object
  */
-declare interface GooglePlaceAddressComponent {
+export interface GooglePlaceAddressComponent {
   long_name: string;
   short_name: string;
   types: string[];
@@ -110,7 +111,7 @@ declare interface GooglePlaceAddressComponent {
 /**
  * Google Place Photo Object
  */
-declare interface GooglePlaceResultPhoto {
+export interface GooglePlaceResultPhoto {
   height: number;
   html_attributions: string[];
   photo_reference: string;
@@ -118,9 +119,9 @@ declare interface GooglePlaceResultPhoto {
 }
 
 /**
- * 
+ *
  */
-declare interface GooglePlaceResultOpenHoursPeriod {
+export interface GooglePlaceResultOpenHoursPeriod {
   close: {
     day: number; // 1
     time: string; // "1730"
@@ -134,7 +135,7 @@ declare interface GooglePlaceResultOpenHoursPeriod {
 /**
  * A user review for a location
  */
-declare interface GooglePlaceResultReview {
+export interface GooglePlaceResultReview {
   author_name: string;
   author_url: string;
   language: string;
@@ -148,7 +149,7 @@ declare interface GooglePlaceResultReview {
 /**
  * The Place Details result in the HTTP body
  */
-declare interface GooglePlaceDetailsResult extends BaseGoogleResult {
+export interface GooglePlaceDetailsResult extends BaseGoogleResult {
   address_components: GooglePlaceAddressComponent[];
   adr_address: string;
   formatted_address: string;
@@ -189,9 +190,9 @@ declare interface GooglePlaceDetailsResult extends BaseGoogleResult {
 }
 
 /**
- * 
+ *
  */
-declare interface GooglePlaceAutocompletePrediction extends Pick<GooglePlaceSearchResult, 'id' | 'place_id' | 'reference' | 'types'>, BaseGoogleResult {
+export interface GooglePlaceAutocompletePrediction extends Pick<GooglePlaceSearchResult, 'id' | 'place_id' | 'reference' | 'types'>, BaseGoogleResult {
   description: string;
   matched_substrings: [{ length: number, offset: number }];
   structured_formatting: { main_text: string, main_text_matched_substrings: string, secondary_text: string };
@@ -201,7 +202,7 @@ declare interface GooglePlaceAutocompletePrediction extends Pick<GooglePlaceSear
 /**
  * A Google Place search result as JSON
  */
-declare interface GooglePlaceSearchResult extends Pick<GooglePlaceDetailsResult, 'formatted_address' | 'geometry' | 'name' | 'opening_hours' | 'photos' | 'place_id' | 'plus_code' | 'rating' | 'id' | 'types' | 'scope' | 'user_ratings_total' | 'vicinity' | 'permanently_closed'>, BaseGoogleResult {
+export interface GooglePlaceSearchResult extends Pick<GooglePlaceDetailsResult, 'formatted_address' | 'geometry' | 'name' | 'opening_hours' | 'photos' | 'place_id' | 'plus_code' | 'rating' | 'id' | 'types' | 'scope' | 'user_ratings_total' | 'vicinity' | 'permanently_closed'>, BaseGoogleResult {
   price_level?: number;
   reference?: string; // in details?
 }
@@ -210,12 +211,12 @@ declare interface GooglePlaceSearchResult extends Pick<GooglePlaceDetailsResult,
 /**
  * An API response code in the payload body.
  */
-declare type GooglePlacesStatusCode = 'OK' | 'ZERO_RESULT' | 'OVER_QUERY_LIMIT' | 'REQUEST_DENIED' | 'INVALID_REQUEST' | 'UNKOWN_ERROR';
+export type GooglePlacesStatusCode = 'OK' | 'ZERO_RESULT' | 'OVER_QUERY_LIMIT' | 'REQUEST_DENIED' | 'INVALID_REQUEST' | 'UNKOWN_ERROR';
 
 /**
  * For internal or extending
  */
-declare interface GooglePlaceBaseResponse {
+export interface GooglePlaceBaseResponse {
   html_attributions?: string[];
   status: GooglePlacesStatusCode;
   // only included if there was an error
@@ -228,14 +229,14 @@ declare interface GooglePlaceBaseResponse {
 /**
  * HTTP body payload for a Google Place search request
  */
-declare interface GooglePlaceSearchResponse extends GooglePlaceBaseResponse {
+export interface GooglePlaceSearchResponse extends GooglePlaceBaseResponse {
   candidates: GooglePlaceSearchResult[];
 }
 
 /**
  * HTTP body payload for a Google Place Nearby search request
  */
-declare interface GooglePlaceNearbySearchResponse extends GooglePlaceBaseResponse {
+export interface GooglePlaceNearbySearchResponse extends GooglePlaceBaseResponse {
   html_attributions?: string[];
   next_page_token?: string;
   results: GooglePlaceSearchResult[];
@@ -244,16 +245,16 @@ declare interface GooglePlaceNearbySearchResponse extends GooglePlaceBaseRespons
 /**
  * HTTP body payload for a Place Details request
  */
-declare interface GooglePlaceDetailsResponse extends GooglePlaceBaseResponse {
+export interface GooglePlaceDetailsResponse extends GooglePlaceBaseResponse {
   result: GooglePlaceDetailsResult;
 }
 
 
-declare type GooglePlaceTextSearchResult = Pick<GooglePlaceSearchResult, 'formatted_address' | 'geometry' | 'icon' | 'id' | 'name' | 'photos' | 'place_id' | 'reference' | 'types'>
+export type GooglePlaceTextSearchResult = Pick<GooglePlaceSearchResult, 'formatted_address' | 'geometry' | 'icon' | 'id' | 'name' | 'photos' | 'place_id' | 'reference' | 'types'>
 /**
  * HTTP body payload for a Place Text search request
  */
-declare interface GooglePlaceTextSearchResponse extends GooglePlaceBaseResponse {
+export interface GooglePlaceTextSearchResponse extends GooglePlaceBaseResponse {
   results: GooglePlaceTextSearchResult[];
 }
 
@@ -262,7 +263,7 @@ declare interface GooglePlaceTextSearchResponse extends GooglePlaceBaseResponse 
 /**
  * HTTP body payload for a Place Query Autocomplete request
  */
-declare interface GooglePlaceQueryAutocompleteResponse extends GooglePlaceBaseResponse {
+export interface GooglePlaceQueryAutocompleteResponse extends GooglePlaceBaseResponse {
   predictions: GooglePlaceAutocompletePrediction[];
 }
 
@@ -270,6 +271,6 @@ declare interface GooglePlaceQueryAutocompleteResponse extends GooglePlaceBaseRe
 /**
  * HTTP body payload for a Place Autocomplete request
  */
-declare interface GooglePlaceAutocompleteResponse extends GooglePlaceBaseResponse {
+export interface GooglePlaceAutocompleteResponse extends GooglePlaceBaseResponse {
   predictions: GooglePlaceAutocompletePrediction[];
 }

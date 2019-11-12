@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "A simple wrapper for the Google Places Web API",
   "main": "dist/google/index.js",
+  "types": "dist/@types/google",
   "scripts": {
-    "prepublish": "yarn build",
+    "prepublish": "tsc",
+    "prepare": "yarn build",
     "test": "jest",
     "test:watch": "jest --verbose --watch",
     "compile": "npm run build",
@@ -40,7 +42,8 @@
     "typescript": "3.4.1"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/@types"
   ],
   "dependencies": {
     "superagent": "^5.0.2"

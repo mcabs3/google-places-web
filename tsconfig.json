@@ -9,11 +9,11 @@
     "baseUrl": "src",
     "strictNullChecks": true,
     "declaration": true,
+    "declarationDir": "dist/@types",
     "keyofStringsOnly": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "target": "es6",
-    "declarationDir": "dist",
     "sourceMap": true,
     "experimentalDecorators": true,
     "strict": true,
@@ -25,7 +25,6 @@
       "jest"
     ],
     "typeRoots": [
-      "src/@types",
       "node_modules/@types"
     ]
   },
@@ -33,6 +32,7 @@
     "src"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ]
 }

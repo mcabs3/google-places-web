@@ -21,6 +21,7 @@ export interface GooglePlacesDetailsOpts extends GooglePlacesOptions {
   placeid: string;
   language?: string;
   sessiontoken?: string;
+  fields?: string
 }
 
 /**

@@ -40,7 +40,7 @@ export const API: ApiMap = {
     requiredKeys: ["input"]
   },
   DETAILS: {
-    optionalKeys: ["language", "sessiontoken"],
+    optionalKeys: ["language", "sessiontoken", "fields"],
     path: "details",
     requiredKeys: ["placeid"]
   },

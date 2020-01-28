@@ -1,7 +1,7 @@
 // tslint:disable: no-console
-/// <reference path="../src/@types/index.d.ts" />
+/// <reference path="../dist/@types/google/types.d.ts" />
 
-import Places from "../dist/google";
+import Places from "../src/google";
 import { performSearch } from "./utils";
 
 try {
@@ -15,11 +15,11 @@ try {
 
   async function run() {
     try {
-
+      Places.nearbysearch()
       const response = await performSearch('Nearby Search', Places.nearbysearch, {
         location: "-37.814,144.96332",
-        rankby: "distance",
-        type: []
+        rankby: "DISTANCE",
+        // cannot use radius because rankby is DISTANCE
       })
 
       console.log('Example Nearby Result', response.results[0]);

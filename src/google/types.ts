@@ -55,11 +55,8 @@ export interface GooglePlacesQueryAutocompleteOpts extends GooglePlacesOptions {
   types?: string[];
 }
 
-/**
- * Internal use for nearbysearch()
- * https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceSearchRequest
- */
-export interface GooglePlacesNearbySearchOpts extends GooglePlacesOptions {
+// DO NOT USE
+export interface BaseGooglePlacesNearbySearch extends GooglePlacesOptions {
   bounds?: string;
   keyword?: string;
   location: string;
@@ -68,10 +65,21 @@ export interface GooglePlacesNearbySearchOpts extends GooglePlacesOptions {
   name?: string;
   opennow?: boolean;
   pagetoken?: string;
-  radius: number;
-  rankby?: 'PROMINENCE' | 'DISTANCE';
   type?: string;
+  rankby?: 'PROMINENCE' | 'DISTANCE'
 }
+
+/**
+ * Internal use for nearbysearch()
+ * https://developers.google.com/maps/documentation/javascript/reference/places-service#PlaceSearchRequest
+ */
+export type GooglePlacesNearbySearchOpts = BaseGooglePlacesNearbySearch & ({
+  rankby: 'DISTANCE';
+  radius?: undefined;
+} | {
+  rankby?: 'PROMINENCE';
+  radius: number;
+});
 
 /**
  * Internal use for textsearch()

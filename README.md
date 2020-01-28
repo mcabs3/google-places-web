@@ -1,10 +1,10 @@
 # Google Places Web
 
-A promise-based implementation integration with [Google Places for Node](https://developers.google.com/places/web-service/search) or server-side JS platforms. This cannot be used as a front-end solution (Angular/React/Vue/Vanilla, etc) because Google has provided their own [JS SDK](https://developers.google.com/maps/documentation/javascript/places)
+A promise-based implementation integration with [Google Places for Node](https://developers.google.com/places/web-service/search) or server-side JS platforms. This cannot be used as a front-end solution (Angular/React/Vue/Vanilla, etc) because Google has provided their own client [JS SDK](https://developers.google.com/maps/documentation/javascript/places)
 
 # New in v1!
 
-In v1 I have updated the library to return the full response body, allowing the developer to have access to anything the API sends back. This will give you access to the `status`, `next_page_token`, and the corresponding "entity" for each search. Typescript typings have been added as well. Please read the Release Notes for more information on this breaking change
+In v1 I have updated the library to return the full response body, allowing the developer to have access to anything the API sends back. This will give you access to the `status`, `next_page_token`, and the corresponding "entity" for each search. Typescript typings have been added as well. Please read the Release Notes for more information on this breaking change.
 
 _TypeScript Types_
 Please note that the google docs aren't the best at describing the format of results you get from each endpoint. I have spend a good amount of time trying to make sure the response types are as accurate as possible. If something is not accurate, feel free to open a pull request explaining the inconsistency with the correction.

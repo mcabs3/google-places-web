@@ -1,6 +1,19 @@
 import * as superagent from "superagent";
 import { API } from "./Constants";
-import { IGooglePlacesConfig, GooglePlacesQueryAutocompleteOpts, GooglePlaceAutocompleteResponse, GooglePlaceQueryAutocompleteResponse, GooglePlaceDetailsResponse, GooglePlacesDetailsOpts, GooglePlacesNearbySearchOpts, GooglePlaceNearbySearchResponse, GooglePlaceTextSearchResponse, GooglePlacesTextSearchOpts, GooglePlaceBaseResponse, GooglePlacesOptions } from "./types";
+import {
+  IGooglePlacesConfig,
+  GooglePlacesQueryAutocompleteOpts,
+  GooglePlaceAutocompleteResponse,
+  GooglePlaceQueryAutocompleteResponse,
+  GooglePlaceDetailsResponse,
+  GooglePlacesDetailsOpts,
+  GooglePlacesNearbySearchOpts,
+  GooglePlaceNearbySearchResponse,
+  GooglePlaceTextSearchResponse,
+  GooglePlacesTextSearchOpts,
+  GooglePlaceBaseResponse,
+  GooglePlacesOptions
+} from "./types";
 
 const GOOGLE_MAPS_API_TARGET = "https://maps.googleapis.com/maps/api/place";
 
@@ -24,8 +37,9 @@ export class GooglePlaces {
    * Retrieves a list of predictions of a partial address
    */
   public autocomplete = async (opts?: GooglePlacesQueryAutocompleteOpts): Promise<GooglePlaceAutocompleteResponse> => {
-    const params = this._permitParams(API.AUTOCOMPLETE, opts);
-    const res = await this._query<GoogleResponse<GooglePlaceAutocompleteResponse>>(API.AUTOCOMPLETE.path, params);
+    const config = API.AUTOCOMPLETE(opts);
+    const params = this._permitParams(config, opts);
+    const res = await this._query<GoogleResponse<GooglePlaceAutocompleteResponse>>(config.path, params);
     return res.body;
   }
 
@@ -35,8 +49,9 @@ export class GooglePlaces {
    * ex. "Pizza in Chicago"
    */
   public queryautocomplete = async (opts?: GooglePlacesQueryAutocompleteOpts): Promise<GooglePlaceQueryAutocompleteResponse> => {
-    const params = this._permitParams(API.AUTOCOMPLETE, opts);
-    const res = await this._query<GoogleResponse<GooglePlaceQueryAutocompleteResponse>>(API.AUTOCOMPLETE.path, params);
+    const config = API.AUTOCOMPLETE(opts);
+    const params = this._permitParams(config, opts);
+    const res = await this._query<GoogleResponse<GooglePlaceQueryAutocompleteResponse>>(config.path, params);
     return res.body;
   }
 
@@ -44,8 +59,9 @@ export class GooglePlaces {
    * Retrieve the details of a Google Place based on the Place ID
    */
   public details = async (opts?: GooglePlacesDetailsOpts): Promise<GooglePlaceDetailsResponse> => {
-    const params = this._permitParams(API.DETAILS, opts);
-    const res = await this._query<GoogleResponse<GooglePlaceDetailsResponse>>(API.DETAILS.path, params);
+    const config = API.DETAILS(opts);
+    const params = this._permitParams(config, opts);
+    const res = await this._query<GoogleResponse<GooglePlaceDetailsResponse>>(config.path, params);
     return res.body;
   }
 
@@ -53,8 +69,14 @@ export class GooglePlaces {
    * Google API Nearby Search
    */
   public nearbysearch = async (opts?: GooglePlacesNearbySearchOpts): Promise<GooglePlaceNearbySearchResponse> => {
-    const params = this._permitParams(API.NEARBY_SEARCH, opts);
-    const res = await this._query<GoogleResponse<GooglePlaceNearbySearchResponse>>(API.NEARBY_SEARCH.path, params);
+    if (opts && opts.rankby && opts.rankby.toUpperCase() === 'DISTANCE') {
+      // Remove radius option if "rankBy" is set to "DISTANCE"
+      opts.radius = undefined;
+    }
+
+    const config = API.NEARBY_SEARCH(opts);
+    const params = this._permitParams(config, opts);
+    const res = await this._query<GoogleResponse<GooglePlaceNearbySearchResponse>>(config.path, params);
     return res.body;
   }
 
@@ -62,8 +84,9 @@ export class GooglePlaces {
    * Google API Text Search
    */
   public textsearch = async (opts?: GooglePlacesTextSearchOpts): Promise<GooglePlaceTextSearchResponse> => {
-    const params = this._permitParams(API.TEXT_SEARCH, opts);
-    const res = await this._query<GoogleResponse<GooglePlaceTextSearchResponse>>(API.TEXT_SEARCH.path, params);
+    const config = API.TEXT_SEARCH(opts);
+    const params = this._permitParams(config, opts);
+    const res = await this._query<GoogleResponse<GooglePlaceTextSearchResponse>>(config.path, params);
     return res.body;
   }
 
@@ -72,13 +95,14 @@ export class GooglePlaces {
    * @deprecated
    */
   public radarsearch = async (opts: GooglePlacesOptions = {}): Promise<GooglePlaceBaseResponse> => {
-    const params: any = this._permitParams(API.RADAR_SEARCH, opts);
+    const config = API.RADAR_SEARCH(opts);
+    const params: any = this._permitParams(config, opts);
 
     if (!params.name && !params.keyword && !params.type) {
       throw new Error("Missing required parameter: [keyword, name, or type]");
     }
 
-    const res = await this._query<GoogleResponse<any>>(API.RADAR_SEARCH.path, params);
+    const res = await this._query<GoogleResponse<any>>(config.path, params);
     return res.body;
   }
 

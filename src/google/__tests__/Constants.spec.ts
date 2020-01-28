@@ -1,4 +1,4 @@
-import { PlaceTypes } from '../Constants';
+import { PlaceTypes, API } from '../Constants';
 
 describe('PlaceType', () => {
   it('should map correctly to Google entity', () => {
@@ -14,5 +14,67 @@ describe('PlaceType', () => {
     expect(PlaceTypes.ADMINISTRATIVE_AREA_LEVEL_2).toBe('administrative_area_level_2');
     expect(PlaceTypes.CITIES).toBe('(cities)');
   });
-
 });
+
+describe('API', () => {
+  describe('Nearby Search', () => {
+    it('should return the default configuration', () => {
+      expect(API.NEARBY_SEARCH({})).toEqual({
+        "optionalKeys": [
+          "bounds",
+          "keyword",
+          "maxprice",
+          "minprice",
+          "name",
+          "opennow",
+          "rankby",
+          "type",
+          "pagetoken",
+        ],
+        "path": "nearbysearch",
+        "requiredKeys": [
+          "location",
+          "radius",
+        ],
+      });
+
+    })
+    it('should return the new configuration if rankby is distance', () => {
+      expect(API.NEARBY_SEARCH({ rankby: 'DISTANCE' })).toEqual({
+        "optionalKeys": [
+          "bounds",
+          "keyword",
+          "maxprice",
+          "minprice",
+          "name",
+          "opennow",
+          "rankby",
+          "type",
+          "pagetoken",
+        ],
+        "path": "nearbysearch",
+        "requiredKeys": [
+          "location",
+        ],
+      });
+
+      expect(API.NEARBY_SEARCH({ rankby: 'distance' })).toEqual({
+        "optionalKeys": [
+          "bounds",
+          "keyword",
+          "maxprice",
+          "minprice",
+          "name",
+          "opennow",
+          "rankby",
+          "type",
+          "pagetoken",
+        ],
+        "path": "nearbysearch",
+        "requiredKeys": [
+          "location",
+        ],
+      });
+    })
+  })
+})

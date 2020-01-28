@@ -21,11 +21,11 @@ export interface GoogleMapsApiOptions {
 }
 
 interface ApiMap {
-  readonly [key: string]: GoogleMapsApiOptions;
+  readonly [key: string]: ((opts?: object) => GoogleMapsApiOptions);
 }
 
 export const API: ApiMap = {
-  AUTOCOMPLETE: {
+  AUTOCOMPLETE: () => ({
     optionalKeys: [
       "components",
       "offset",
@@ -38,17 +38,17 @@ export const API: ApiMap = {
     ],
     path: "autocomplete",
     requiredKeys: ["input"]
-  },
-  DETAILS: {
+  }),
+  DETAILS: () => ({
     optionalKeys: ["language", "sessiontoken", "fields"],
     path: "details",
     requiredKeys: ["placeid"]
-  },
-  NEARBY_SEARCH: {
-    optionalKeys: [
+  }),
+  NEARBY_SEARCH: (opts: any) => {
+    const path = 'nearbysearch';
+    const optionalKeys = [
       "bounds",
       "keyword",
-      "radius",
       "maxprice",
       "minprice",
       "name",
@@ -56,11 +56,22 @@ export const API: ApiMap = {
       "rankby",
       "type",
       "pagetoken"
-    ],
-    path: "nearbysearch",
-    requiredKeys: ["location", "radius"]
+    ]
+
+    const requiredKeys = ["location",];
+
+    // If rankby is not DISTANCE, radius is required
+    if (!opts || !opts.rankby || typeof opts.rankby === 'string' && opts.rankby.toUpperCase() !== 'DISTANCE') {
+      requiredKeys.push("radius");
+    }
+
+    return ({
+      optionalKeys,
+      path,
+      requiredKeys
+    })
   },
-  RADAR_SEARCH: {
+  RADAR_SEARCH: () => ({
     optionalKeys: [
       "keyword",
       "language",
@@ -72,8 +83,8 @@ export const API: ApiMap = {
     ],
     path: "radarsearch",
     requiredKeys: ["location", "radius"]
-  },
-  TEXT_SEARCH: {
+  }),
+  TEXT_SEARCH: () => ({
     optionalKeys: [
       "bounds",
       "location",
@@ -86,5 +97,5 @@ export const API: ApiMap = {
     ],
     path: "textsearch",
     requiredKeys: ["query"]
-  }
+  })
 };

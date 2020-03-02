@@ -46,6 +46,16 @@ export const API: ApiMap = {
   }),
   NEARBY_SEARCH: (opts: any) => {
     const path = 'nearbysearch';
+
+    // if pagetoken is passed, all other params are to be ignored
+    if (!!opts && !!opts.pagetoken) {
+      return {
+        optionalKeys: [],
+        path,
+        requiredKeys: ['pagetoken'],
+      }
+    }
+
     const optionalKeys = [
       "bounds",
       "keyword",

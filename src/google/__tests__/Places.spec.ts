@@ -1,5 +1,5 @@
 import Places from '../Places';
-import { GooglePlaceAutocompletePrediction } from 'google/types';
+import { GooglePlaceAutocompletePrediction } from '../../google/google';
 
 const MASTER_KEY = process.env.PLACES_API_KEY;
 const key1 = 'TestKey';

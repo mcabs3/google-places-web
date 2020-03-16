@@ -1,4 +1,4 @@
-export const GOOGLE_PLACES_API = "https://maps.googleapis.com/maps/api/place/";
+export const GOOGLE_PLACES_API = "https://maps.googleapis.com/maps/api/place";
 
 export const PlaceTypes = {
   ADDRESS: "address",

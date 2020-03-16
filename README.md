@@ -1,92 +1,93 @@
-# Google Places Web
+# Welcome to V2!
 
-A promise-based implementation integration with [Google Places for Node](https://developers.google.com/places/web-service/search) or server-side JS platforms. This cannot be used as a front-end solution (Angular/React/Vue/Vanilla, etc) because Google has provided their own client [JS SDK](https://developers.google.com/maps/documentation/javascript/places)
+V2 is a complete rewrite to provide better TypeScript support and infrastructure for validations with more flexibility. Google Places Web provides both base classes and a factory implementation to make it flexible and easy to use.
 
-# New in v1!
+# What is this?
 
-In v1 I have updated the library to return the full response body, allowing the developer to have access to anything the API sends back. This will give you access to the `status`, `next_page_token`, and the corresponding "entity" for each search. Typescript typings have been added as well. Please read the Release Notes for more information on this breaking change.
+A promise-based integration with [Google Places for Node](https://developers.google.com/places/web-service/search) or server-side JS platforms. This cannot be used as a front-end solution (Angular/React/Vue/Vanilla, etc) because Google has provided their own client [JS SDK](https://developers.google.com/maps/documentation/javascript/places)
 
-_TypeScript Types_
-Please note that the google docs aren't the best at describing the format of results you get from each endpoint. I have spend a good amount of time trying to make sure the response types are as accurate as possible. If something is not accurate, feel free to open a pull request explaining the inconsistency with the correction.
+### Implemented Searches
+
+- [Find By Text](https://developers.google.com/places/web-service/search#FindPlaceRequests)
+- [Text Search](https://developers.google.com/places/web-service/search#TextSearchRequests)
+- [Nearby Search](https://developers.google.com/places/web-service/search#PlaceSearchRequests)
+- [Autocomplete](https://developers.google.com/places/web-service/autocomplete)
+- [Query Autocomplete](https://developers.google.com/places/web-service/query)
+- [Place Details](https://developers.google.com/places/web-service/details)
+
+### TypeScript
+
+Please note that the google docs aren't always thorough at describing the format of results you get from each endpoint. I have spend a good amount of time trying to make sure the response types are as accurate as possible. If something is not accurate, feel free to open a pull request explaining the inconsistency with the correction.
 
 ## Installation
 
 ```shell
-yarn add google-places-web;
+# with yarn
+yarn add google-places-web
+
+# with npm
 npm i google-places-web -S
 ```
 
-## Importing
+## Usage
 
-```javascript
+```typescript
+import {
+  AutoCompleteSearch,
+  FindByTextSearch,
+  NearbySearch,
+  PlaceDetailsSearch,
+  QueryAutoCompleteSearch,
+  TextSearch
+} from "google-places-web";
+```
+
+```typescript
 // ES6
-import Places from "google-places-web";
+import { PlacesSearchFactory, NearbySearch } from "google-places-web";
 
-// ES5
-const Places: GooglePlaces = require("google-places-web").default; // instance of GooglePlaces Class;
+// create your own instance of a search
+const search = new NearbySearch();
+search.setApiKey("your-api-key");
 
-// Setup
-Places.apiKey = "<API_KEY>";
-Places.debug = __DEV__; // boolean;
+// OR create a singleton factory to create searches reusing the api key
+const factory = new PlacesSearchFactory("your-api-key");
+const search = factory.nearbysearch();
+const search2 = factory.nearbysearch();
 ```
 
-### [Places Autocomplete](https://developers.google.com/places/web-service/autocomplete)
+## Methods
 
-```javascript
-let partialAddress = "1600 Pennsylv";
-const radius = 2000;
-const language = "en";
+Each search is the same type of builder-like implementation. Create an instance of the search, set the desired/required parameters, and asynchronously execute the search.
 
-// Search with default opts
-Places.autocomplete({ input: partialAddress, radius, language })
-  .then(results => {
-    // results array of partial matches
-  })
-  .catch(e => console.log(e));
-```
+| Method                    | Return Type              | Description                                                                                                     |
+| ------------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `setApiKey(key: string)`  | `self`                   | Set the API key for the search                                                                                  |
+| `set(key: string, value)` | `self`                   | Set a parameter to be included in the request                                                                   |
+| `get(key: string)`        | `any | undefined`        | Get a parameter from the building requst                                                                        |
+| `remove(key: string)`     | `boolean`                | Deletes a parameter from the building requst if present, returns `true` if successful, false if not found       |
+| `getParamsAsObject()`     | `object`                 | returns an object with all of the parameters for the search                                                     |
+| `isValid()`               | `boolean`                | Returns `true` if the search has the correct parameters to initiate a search                                    |
+| `exec()`                  | `Promise<PlacesReponse>` | Performs the search based on the parameters provided asynchronously. Will throw an error if unable to complete. |
 
-### [Places Details](https://developers.google.com/places/web-service/details)
+## PlacesSearchFactory
 
-```javascript
-const whiteHousePlaceID = "ChIJGVtI4by3t4kRr51d_Qm_x58";
+This factory class has been added to create a singleton use of this library. You can use this class to generate preconfigured searches. Injecting your API key into a new search. This is a familiar approach to how v1 was implemented.
 
-try {
-  const response = Places.details({ placeid: whiteHousePlaceID });
-  const { status, result } = response;
-} catch (error) {
-  console.log(error);
-}
-```
+```typescript
+const Places = new PlacesSearchFactory("you-api-key");
 
-### [Nearby Places](https://developers.google.com/places/web-service/search)
+await Places.nearbysearch()
+  .set("radius", 500)
+  .exec();
 
-```javascript
-try {
-  const response = await Places.nearbysearch({
-    location: "-37.814,144.96332", // LatLon delimited by ,
-    // radius: "500",  // Radius cannot be used if rankBy set to DISTANCE
-    type: [], // Undefined type will return all types
-    rankby: "distance" // See google docs for different possible values
-  });
+await Places.textsearch()
+  .set("location", "0,0")
+  .exec();
 
-  const { status, results, next_page_token, html_attributions } = response;
-} catch (error) {
-  console.log(error);
-}
-```
-
-### [Text Search](https://developers.google.com/places/web-service/search#TextSearchRequests)
-
-```javascript
-try {
-  const response = await Places.textsearch({
-    query: "Pizza near me"
-  });
-
-  const { status, results } = response;
-} catch (error) {
-  console.log(error);
-}
+await Places.autocomplete()
+  .set("input", "White House")
+  .exec();
 ```
 
 ## Full Example
@@ -114,5 +115,3 @@ Feel free to file issues as you see fit, and always looking for collaborators to
 **Google states that you can use Place Autocomplete even without a map. If you do show a map, it must be a Google map. When you display predictions from the Place Autocomplete service without a map, you must include the [Powered by Google](https://developers.google.com/places/web-service/policies#logo_requirements) logo.**
 
 ## Next Goals
-
-- enhance TS support for the options allowed for each endpoint

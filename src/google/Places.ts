@@ -11,16 +11,21 @@ import {
   GooglePlaceNearbySearchResponse,
   GooglePlaceTextSearchResponse,
   GooglePlacesTextSearchOpts,
-  GooglePlaceBaseResponse,
-  GooglePlacesOptions
-} from "./types";
+  GooglePlacesOptions,
+  GooglePlacesFindPlaceSearchOpts,
+  GooglePlaceFindPlaceSearchResponse,
+} from "./google";
+import { GooglePlaceBaseResponse } from "types";
 
-const GOOGLE_MAPS_API_TARGET = "https://maps.googleapis.com/maps/api/place";
+export const GOOGLE_MAPS_API_TARGET = "https://maps.googleapis.com/maps/api/place";
 
 interface GoogleResponse<T = any> extends superagent.Response {
   body: T
 }
 
+/**
+ * @deprecated
+ */
 export class GooglePlaces {
   private _apiKey?: string;
   private _debug: boolean = false;
@@ -77,6 +82,17 @@ export class GooglePlaces {
     const config = API.NEARBY_SEARCH(opts);
     const params = this._permitParams(config, opts);
     const res = await this._query<GoogleResponse<GooglePlaceNearbySearchResponse>>(config.path, params);
+    return res.body;
+  }
+
+  /**
+   * Google API Find Place Search
+   * @deprecated
+   */
+  public findPlaceSearch = async (opts?: GooglePlacesFindPlaceSearchOpts): Promise<GooglePlaceFindPlaceSearchResponse> => {
+    const config = API.FIND_PLACE_SEARCH(opts);
+    const params = this._permitParams(config, opts);
+    const res = await this._query<GoogleResponse<GooglePlaceFindPlaceSearchResponse>>(config.path, params);
     return res.body;
   }
 

@@ -1,10 +1,10 @@
 {
   "name": "google-places-web",
-  "version": "1.0.2",
+  "version": "2.0",
   "description": "A simple wrapper for the Google Places Web API",
-  "main": "dist/google/index.js",
-  "types": "dist/@types/google",
+  "main": "dist/index.js",
   "scripts": {
+    "dev": "tsc --watch",
     "prepublish": "tsc",
     "prepare": "yarn build",
     "test": "jest",
@@ -42,9 +42,9 @@
     "typescript": "3.4.1"
   },
   "files": [
-    "dist",
-    "src/@types"
+    "dist"
   ],
+  "types": "dist/index.d.ts",
   "dependencies": {
     "superagent": "^5.0.2"
   }

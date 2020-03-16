@@ -1,3 +1,4 @@
+import { GooglePlaceBaseResponse } from "types";
 
 /**
  * Configuration Options for the Constructor for GooglePlaces class
@@ -94,6 +95,17 @@ export interface GooglePlacesTextSearchOpts extends GooglePlacesOptions {
   query: string;
   radius?: number;
   type?: string;
+}
+
+/**
+ * Internal use for findplacesearch()
+ * https://developers.google.com/maps/documentation/javascript/reference/places-service#FindPlaceFromQueryRequest
+ */
+export interface GooglePlacesFindPlaceSearchOpts extends GooglePlacesOptions {
+  input: string;
+  inputtype: 'textquery' | 'phonenumber';
+  language?: string;
+  fields?: string;
 }
 
 interface BaseGoogleResult {
@@ -222,25 +234,6 @@ export interface GooglePlaceSearchResult extends Pick<GooglePlaceDetailsResult, 
  */
 export type GooglePlacesStatusCode = 'OK' | 'ZERO_RESULT' | 'OVER_QUERY_LIMIT' | 'REQUEST_DENIED' | 'INVALID_REQUEST' | 'UNKOWN_ERROR';
 
-/**
- * For internal or extending
- */
-export interface GooglePlaceBaseResponse {
-  html_attributions?: string[];
-  status: GooglePlacesStatusCode;
-  // only included if there was an error
-  error_message?: string;
-  debug_log?: {
-    line: any[];
-  }
-}
-
-/**
- * HTTP body payload for a Google Place search request
- */
-export interface GooglePlaceSearchResponse extends GooglePlaceBaseResponse {
-  candidates: GooglePlaceSearchResult[];
-}
 
 /**
  * HTTP body payload for a Google Place Nearby search request
@@ -260,6 +253,17 @@ export interface GooglePlaceDetailsResponse extends GooglePlaceBaseResponse {
 
 
 export type GooglePlaceTextSearchResult = Pick<GooglePlaceSearchResult, 'formatted_address' | 'geometry' | 'icon' | 'id' | 'name' | 'photos' | 'place_id' | 'reference' | 'types'>
+export type GooglePlaceFindPlaceSearchResult = Pick<GooglePlaceDetailsResult, 'formatted_address' | 'name' | 'opening_hours' | 'photos' | 'rating' | 'user_ratings_total' | 'place_id' | 'icon' | 'geometry'>
+/**
+
+/**
+ * HTTP body payload for a Find Place search request
+ */
+export interface GooglePlaceFindPlaceSearchResponse extends GooglePlaceBaseResponse {
+  candidates: GooglePlaceFindPlaceSearchResult[];
+}
+
+
 /**
  * HTTP body payload for a Place Text search request
  */

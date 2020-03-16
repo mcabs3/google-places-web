@@ -8,8 +8,6 @@
     "noImplicitAny": true,
     "baseUrl": "src",
     "strictNullChecks": true,
-    "declaration": true,
-    "declarationDir": "dist/@types",
     "keyofStringsOnly": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
@@ -24,9 +22,7 @@
       "node",
       "jest"
     ],
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "declaration": true
   },
   "include": [
     "src"

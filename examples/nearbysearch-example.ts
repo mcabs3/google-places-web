@@ -1,7 +1,4 @@
-// tslint:disable: no-console
-/// <reference path="../dist/@types/google/types.d.ts" />
-
-import Places from "../src/google";
+import Places from "../dist";
 import { performSearch } from "./utils";
 
 try {

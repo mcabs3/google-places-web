@@ -1,7 +1,8 @@
 // tslint:disable: no-console
+/// <reference types="node" />
+/// <reference path="../dist/@types/index.d.ts" />
 
-import { AutoCompleteSearch } from "../dist";
-import { performSearch } from "./utils";
+import { PlacesSearchFactory } from '../dist/google/PlacesSearchFactory';
 
 try {
   const apiKey = process.env.PLACES_API_KEY;
@@ -9,16 +10,15 @@ try {
     throw new Error("Missing PLACES_API_KEY env variable");
   }
 
+  const places = new PlacesSearchFactory(apiKey);
+
   async function run() {
     try {
-      const search = new AutoCompleteSearch();
+      const search = places.nearbysearch();
 
-      search.setApiKey(apiKey);
-      search.set('input', "1600 Pennsylv").set('radius', 2000).set('language', 'en');
+      const response = await search.set('location', "-37.814,144.96332").set('rankby', 'distance').exec();
 
-      const response: any = await search.exec();
-
-      console.log('Example Autocomplete Prediction', response.predictions[0]);
+      console.log('Example Nearby Result', response.results[0]);
 
     } catch (error) {
       console.log("Error", error);

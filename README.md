@@ -64,9 +64,9 @@ try {
 try {
   const response = await Places.nearbysearch({
     location: "-37.814,144.96332", // LatLon delimited by ,
-    // radius: "500",  // Radius cannot be used if rankBy set to DISTANCE
-    type: [], // Undefined type will return all types
-    rankby: "distance" // See google docs for different possible values
+    // radius: 500,  // Radius cannot be used if rankBy set to DISTANCE
+    type: 'restaurant', // Undefined type will return all types. For list of possible values, see https://developers.google.com/places/supported_types
+    rankby: "DISTANCE" // Can be PROMINENCE or DISTANCE. For more info, see https://developers.google.com/maps/documentation/javascript/places#place_search_requests
   });
 
   const { status, results, next_page_token, html_attributions } = response;

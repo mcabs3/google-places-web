@@ -1,6 +1,6 @@
 # Welcome to V2!
 
-V2 is a complete rewrite to provide better TypeScript support and infrastructure for validations with more flexibility. Google Places Web provides both base classes and a factory implementation to make it flexible and easy to use.
+V2 is a complete rewrite to provide better TypeScript support and infrastructure for validations with more flexibility. Google Places Web provides both base classes and a factory implementation to make it flexible and easy to use. There are breaking changes so please read through the readme below.
 
 # What is this?
 
@@ -38,7 +38,7 @@ import {
   NearbySearch,
   PlaceDetailsSearch,
   QueryAutoCompleteSearch,
-  TextSearch
+  TextSearch,
 } from "google-places-web";
 ```
 
@@ -77,17 +77,11 @@ This factory class has been added to create a singleton use of this library. You
 ```typescript
 const Places = new PlacesSearchFactory("you-api-key");
 
-await Places.nearbysearch()
-  .set("radius", 500)
-  .exec();
+await Places.nearbysearch().set("radius", 500).exec();
 
-await Places.textsearch()
-  .set("location", "0,0")
-  .exec();
+await Places.textsearch().set("location", "0,0").exec();
 
-await Places.autocomplete()
-  .set("input", "White House")
-  .exec();
+await Places.autocomplete().set("input", "White House").exec();
 ```
 
 ## Full Example
@@ -113,5 +107,3 @@ Feel free to file issues as you see fit, and always looking for collaborators to
 ## Important Notes
 
 **Google states that you can use Place Autocomplete even without a map. If you do show a map, it must be a Google map. When you display predictions from the Place Autocomplete service without a map, you must include the [Powered by Google](https://developers.google.com/places/web-service/policies#logo_requirements) logo.**
-
-## Next Goals

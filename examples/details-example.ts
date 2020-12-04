@@ -1,8 +1,7 @@
-// tslint:disable: no-console
-/// <reference path="../src/@types/index.d.ts" />
-
 import Places from "../dist/google";
+import { GooglePlaceDetailsResponse } from "../dist/google/google";
 import { performSearch } from "./utils";
+
 
 try {
   const apiKey = process.env.PLACES_API_KEY;
@@ -12,6 +11,7 @@ try {
 
   Places.apiKey = apiKey;
 
+  // eslint-disable-next-line no-inner-declarations
   async function run() {
     try {
       const whiteHousePlaceID = "ChIJGVtI4by3t4kRr51d_Qm_x58";

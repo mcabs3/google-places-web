@@ -1,6 +1,3 @@
-// tslint:disable: no-console
-/// <reference path="../dist/@types/google/types.d.ts" />
-
 import Places from "../src/google";
 import { performSearch } from "./utils";
 
@@ -13,6 +10,7 @@ try {
   Places.apiKey = apiKey;
 
 
+  // eslint-disable-next-line no-inner-declarations
   async function run() {
     try {
       Places.nearbysearch()

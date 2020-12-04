@@ -9,7 +9,7 @@
     "baseUrl": "src",
     "strictNullChecks": true,
     "declaration": true,
-    "declarationDir": "dist/@types",
+    "declarationDir": "dist",
     "keyofStringsOnly": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,

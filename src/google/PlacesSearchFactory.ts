@@ -21,7 +21,7 @@ export class PlacesSearchFactory {
   public findbytextsearch(): FindByTextSearch {
     const search = new FindByTextSearch();
     search.setApiKey(this._api);
-    return search
+    return search;
   }
 
   public textsearch(): TextSearch {

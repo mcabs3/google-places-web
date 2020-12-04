@@ -95,4 +95,4 @@ export type PlacesType =
   | 'travel_agency'
   | 'university'
   | 'veterinary_care'
-  | 'zoo'
+  | 'zoo';

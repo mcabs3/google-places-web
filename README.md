@@ -38,20 +38,20 @@ import {
   NearbySearch,
   PlaceDetailsSearch,
   QueryAutoCompleteSearch,
-  TextSearch,
-} from "google-places-web";
+  TextSearch
+} from 'google-places-web';
 ```
 
 ```typescript
 // ES6
-import { PlacesSearchFactory, NearbySearch } from "google-places-web";
+import { PlacesSearchFactory, NearbySearch } from 'google-places-web';
 
 // create your own instance of a search
 const search = new NearbySearch();
-search.setApiKey("your-api-key");
+search.setApiKey('your-api-key');
 
 // OR create a singleton factory to create searches reusing the api key
-const factory = new PlacesSearchFactory("your-api-key");
+const factory = new PlacesSearchFactory('your-api-key');
 const search = factory.nearbysearch();
 const search2 = factory.nearbysearch();
 ```
@@ -61,10 +61,10 @@ const search2 = factory.nearbysearch();
 Each search is the same type of builder-like implementation. Create an instance of the search, set the desired/required parameters, and asynchronously execute the search.
 
 | Method                    | Return Type              | Description                                                                                                     |
-| ------------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| ------------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
 | `setApiKey(key: string)`  | `self`                   | Set the API key for the search                                                                                  |
 | `set(key: string, value)` | `self`                   | Set a parameter to be included in the request                                                                   |
-| `get(key: string)`        | `any | undefined`        | Get a parameter from the building requst                                                                        |
+| `get(key: string)`        | `any                     | undefined`                                                                                                      | Get a parameter from the building requst |
 | `remove(key: string)`     | `boolean`                | Deletes a parameter from the building requst if present, returns `true` if successful, false if not found       |
 | `getParamsAsObject()`     | `object`                 | returns an object with all of the parameters for the search                                                     |
 | `isValid()`               | `boolean`                | Returns `true` if the search has the correct parameters to initiate a search                                    |
@@ -75,27 +75,31 @@ Each search is the same type of builder-like implementation. Create an instance 
 This factory class has been added to create a singleton use of this library. You can use this class to generate preconfigured searches. Injecting your API key into a new search. This is a familiar approach to how v1 was implemented.
 
 ```typescript
-const Places = new PlacesSearchFactory("you-api-key");
+const Places = new PlacesSearchFactory('you-api-key');
 
-await Places.nearbysearch().set("radius", 500).exec();
+await Places.nearbysearch().set('radius', 500).exec();
 
-await Places.textsearch().set("location", "0,0").exec();
+await Places.textsearch().set('location', '0,0').exec();
 
-await Places.autocomplete().set("input", "White House").exec();
+await Places.autocomplete().set('input', 'White House').exec();
 ```
 
-## Full Example
+## Running Examples
 
 Make sure you have the dependencies installed (`yarn`) and have built it with `yarn build`.
 
+**create a `.env` with your `PLACES_API_KEY` to make testing and development easier.**
+
 ```shell
-# will build and run the example, replace with your google api key
-> PLACES_API_KEY=<your_key_here> yarn ts-node examples/whatever-example.ts
+# uses the PLACES_API_KEY from .env file and is required
+> yarn run:example examples/whatever-example.ts
 ```
 
 ## Troubleshooting/Contributing
 
-Feel free to file issues as you see fit, and always looking for collaborators to help make this better. If you are interested in contributing, you may clone the repository, and create a `.ts` file for an example
+create a `.env` with your `PLACES_API_KEY` to make testing and development easier.
+
+Feel free to file issues as you see fit, and always looking for collaborators to help make this better. If you are interested in contributing, you may clone the repository, and create a `.ts` file for an example you think would benefit to share.
 
 ## Errors
 

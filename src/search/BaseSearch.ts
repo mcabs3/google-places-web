@@ -1,7 +1,7 @@
-import * as superagent from "superagent";
+import * as superagent from 'superagent';
 
-import { GOOGLE_PLACES_API } from "../google/Constants";
-import { PlacesRequest } from "types";
+import { GOOGLE_PLACES_API } from '../google/constants';
+import { PlacesRequest } from 'types';
 
 export interface Searchable<T> {
   exec(): Promise<T>;
@@ -11,8 +11,9 @@ export interface ValidatableSearch {
   isValid(): boolean;
 }
 
-export abstract class BaseSearch<T extends PlacesRequest> implements ValidatableSearch {
-  protected _dev: boolean = false;
+export abstract class BaseSearch<T extends PlacesRequest>
+  implements ValidatableSearch {
+  protected _dev = false;
   protected _params = new Map<keyof T, any>();
 
   public setDev(dev: boolean) {
@@ -65,10 +66,10 @@ export abstract class BaseSearch<T extends PlacesRequest> implements Validatable
       throw new Error('no parameters provided');
     }
 
-
     const params = this.getParamsAsObject();
-    const response = await superagent.get(`${GOOGLE_PLACES_API}/${url}/json`).query({ key: this.get('key'), ...params });
+    const response = await superagent
+      .get(`${GOOGLE_PLACES_API}/${url}/json`)
+      .query({ key: this.get('key'), ...params });
     return response.body;
   }
-
 }

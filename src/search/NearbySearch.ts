@@ -1,8 +1,16 @@
+import { BaseSearch, Searchable } from './BaseSearch';
+import {
+  PlacesPageTokenRequest,
+  PlacesRequest,
+  PlacesTypeRequest,
+  GooglePlaceBaseResponse,
+  PlacesSearchResult
+} from '../types';
 
-import { BaseSearch, Searchable } from "./BaseSearch";
-import { PlacesPageTokenRequest, PlacesRequest, PlacesTypeRequest, GooglePlaceBaseResponse, PlacesSearchResult } from "../types";
-
-interface BaseNearbySearchRequest extends PlacesPageTokenRequest, PlacesRequest, PlacesTypeRequest {
+interface BaseNearbySearchRequest
+  extends PlacesPageTokenRequest,
+    PlacesRequest,
+    PlacesTypeRequest {
   // longitude,latitude
   location: string;
   keyword?: string;
@@ -22,7 +30,6 @@ interface NearbySearchWithRadiusByRequest extends BaseNearbySearchRequest {
   rankby: never;
 }
 
-
 interface NearbySearchWithRankByRequest extends BaseNearbySearchRequest {
   /**
    * When distance: keyword, name or type must be defined
@@ -31,7 +38,9 @@ interface NearbySearchWithRankByRequest extends BaseNearbySearchRequest {
   radius: never;
 }
 
-export type NearbySearchRequest = NearbySearchWithRankByRequest | NearbySearchWithRadiusByRequest;
+export type NearbySearchRequest =
+  | NearbySearchWithRankByRequest
+  | NearbySearchWithRadiusByRequest;
 
 /**
  * HTTP body payload for a Google Place Nearby search request
@@ -44,7 +53,9 @@ export interface NearbySearchResponse extends GooglePlaceBaseResponse {
 /**
  * Documentation: https://developers.google.com/places/web-service/search#PlaceSearchRequests
  */
-export class NearbySearch extends BaseSearch<NearbySearchRequest> implements Searchable<NearbySearchResponse> {
+export class NearbySearch
+  extends BaseSearch<NearbySearchRequest>
+  implements Searchable<NearbySearchResponse> {
   public async exec() {
     const rankby = this.get('rankby');
     if (!!rankby) {

@@ -1,5 +1,5 @@
 import Places from '../Places';
-import { GooglePlaceAutocompletePrediction } from '../../google/google';
+import { GooglePlaceAutocompletePrediction } from 'types';
 
 const MASTER_KEY = process.env.PLACES_API_KEY;
 const key1 = 'TestKey';
@@ -16,15 +16,17 @@ describe('API Key', () => {
     Places.apiKey = key2;
     expect(Places.apiKey).toBe(key2);
 
-    Places.apiKey = (key3 as any);
+    Places.apiKey = key3 as any;
     expect(Places.apiKey).toBe(key3);
   });
 
   it('should throw an error for invalid API Key', () => {
-    expect(() => Places.apiKey = invalidKey1 as any).toThrow('Invalid API Key');
+    expect(() => (Places.apiKey = invalidKey1 as any)).toThrow(
+      'Invalid API Key'
+    );
     expect(Places.apiKey).toBe(null);
 
-    expect(() => Places.apiKey = invalidKey2).toThrow('Invalid API Key');
+    expect(() => (Places.apiKey = invalidKey2)).toThrow('Invalid API Key');
     expect(Places.apiKey).toBe(null);
   });
 });
@@ -48,7 +50,7 @@ describe('Details', () => {
     } catch (error) {
       expect(error.message).toMatch('No parameters provided');
     }
-  })
+  });
 
   it('should successfully find Wrigley Field', async () => {
     Places.apiKey = MASTER_KEY;
@@ -65,7 +67,6 @@ describe('Details', () => {
 });
 
 describe('Auto Complete', () => {
-
   it('should throw an error for missing data', async () => {
     Places.apiKey = key1;
     expect.assertions(1);
@@ -84,13 +85,17 @@ describe('Auto Complete', () => {
     } catch (error) {
       expect(error.message).toMatch('No parameters provided');
     }
-  })
+  });
 
   it('should perform a successful autocomplete for Wrigley Field', async () => {
     const WRIGLEY_FIELD_PLACE_ID = 'ChIJId-a5bLTD4gRRtbdduE-6hw';
     Places.apiKey = MASTER_KEY;
     const places = await Places.autocomplete({ input: 'Wrigley Field' });
-    const found: GooglePlaceAutocompletePrediction | undefined = places.predictions.find(place => place.place_id === WRIGLEY_FIELD_PLACE_ID)
+    const found:
+      | GooglePlaceAutocompletePrediction
+      | undefined = places.predictions.find(
+      (place) => place.place_id === WRIGLEY_FIELD_PLACE_ID
+    );
     expect(found).toBeDefined();
   });
 });

@@ -4,7 +4,7 @@ export * from './types';
 
 // V1
 export * from './google/Places';
-export * from './google/Constants';
+export * from './google/constants';
 
 // V2
 export * from './google/PlacesSearchFactory';

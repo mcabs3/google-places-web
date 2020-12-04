@@ -1,4 +1,10 @@
-export type PlacesStatusCode = 'OK' | 'ZERO_RESULT' | 'OVER_QUERY_LIMIT' | 'REQUEST_DENIED' | 'INVALID_REQUEST' | 'UNKOWN_ERROR';
+export type PlacesStatusCode =
+  | 'OK'
+  | 'ZERO_RESULT'
+  | 'OVER_QUERY_LIMIT'
+  | 'REQUEST_DENIED'
+  | 'INVALID_REQUEST'
+  | 'UNKOWN_ERROR';
 
 interface BaseGoogleResult {
   [key: string]: any;
@@ -38,11 +44,11 @@ export interface PlacesResultOpenHoursPeriod {
   close: {
     day: number; // 1
     time: string; // "1730"
-  },
+  };
   open: {
     day: number;
     time: string;
-  }
+  };
 }
 
 /**
@@ -89,7 +95,7 @@ export interface PlacesDetailsResult extends BaseGoogleResult {
   plus_code?: {
     global_code: string;
     compound_code?: string;
-  }
+  };
   rating: number;
   reference: string;
   reviews: PlacesResultReview[];
@@ -105,17 +111,41 @@ export interface PlacesDetailsResult extends BaseGoogleResult {
 /**
  *
  */
-export interface PlacesAutoCompletePrediction extends Pick<PlacesSearchResult, 'id' | 'place_id' | 'reference' | 'types'>, BaseGoogleResult {
+export interface PlacesAutoCompletePrediction
+  extends Pick<PlacesSearchResult, 'id' | 'place_id' | 'reference' | 'types'>,
+    BaseGoogleResult {
   description: string;
-  matched_substrings: [{ length: number, offset: number }];
-  structured_formatting: { main_text: string, main_text_matched_substrings: string, secondary_text: string };
-  terms: [{ offset: number, value: string }];
+  matched_substrings: [{ length: number; offset: number }];
+  structured_formatting: {
+    main_text: string;
+    main_text_matched_substrings: string;
+    secondary_text: string;
+  };
+  terms: [{ offset: number; value: string }];
 }
 
 /**
  * A Google Place search result as JSON
  */
-export interface PlacesSearchResult extends Pick<PlacesDetailsResult, 'formatted_address' | 'geometry' | 'name' | 'opening_hours' | 'photos' | 'place_id' | 'plus_code' | 'rating' | 'id' | 'types' | 'scope' | 'user_ratings_total' | 'vicinity' | 'permanently_closed'>, BaseGoogleResult {
+export interface PlacesSearchResult
+  extends Pick<
+      PlacesDetailsResult,
+      | 'formatted_address'
+      | 'geometry'
+      | 'name'
+      | 'opening_hours'
+      | 'photos'
+      | 'place_id'
+      | 'plus_code'
+      | 'rating'
+      | 'id'
+      | 'types'
+      | 'scope'
+      | 'user_ratings_total'
+      | 'vicinity'
+      | 'permanently_closed'
+    >,
+    BaseGoogleResult {
   price_level?: number;
   reference?: string; // in details?
 }
@@ -130,5 +160,5 @@ export interface GooglePlaceBaseResponse {
   error_message?: string;
   debug_log?: {
     line: any[];
-  }
+  };
 }

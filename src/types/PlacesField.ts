@@ -12,22 +12,23 @@ export type PlacesDetailsField =
   | 'type'
   | 'url'
   | 'utc_offset'
-  | 'vicinity'
+  | 'vicinity';
 
 export type PlacesContactField =
   | 'formatted_phone_number'
   | 'international_phone_number'
   | 'opening_hours'
-  | 'website'
+  | 'website';
 
 export type PlacesAtmosphereField =
   | 'price_level'
   | 'rating'
   | 'review'
-  | 'user_ratings_total'
+  | 'user_ratings_total';
 
-
-export type PlacesField = PlacesDetailsField & PlacesContactField & PlacesAtmosphereField;
+export type PlacesField = PlacesDetailsField &
+  PlacesContactField &
+  PlacesAtmosphereField;
 
 // export type PlacesSubsetField = Omit<PlacesField,
 //   | 'address_component'

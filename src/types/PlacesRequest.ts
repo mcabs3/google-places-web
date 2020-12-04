@@ -1,4 +1,4 @@
-import { PlacesType } from "types";
+import { PlacesType } from 'types';
 
 export interface PlacesRequest {
   key: string;

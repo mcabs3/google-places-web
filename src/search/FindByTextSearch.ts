@@ -1,8 +1,14 @@
-import { Searchable, BaseSearch } from "./BaseSearch";
-import { PlacesRequest, PlacesFieldsRequest, GooglePlaceBaseResponse, PlacesDetailsResult } from "../types";
+import { Searchable, BaseSearch } from './BaseSearch';
+import {
+  PlacesRequest,
+  PlacesFieldsRequest,
+  GooglePlaceBaseResponse,
+  PlacesDetailsResult
+} from '../types';
 
-
-export interface FindByTextSearchRequest extends PlacesRequest, PlacesFieldsRequest {
+export interface FindByTextSearchRequest
+  extends PlacesRequest,
+    PlacesFieldsRequest {
   input: string;
   inputtype: 'textquery' | 'phonenumber';
   language?: string;
@@ -22,7 +28,9 @@ export interface FindByTextSearchResponse extends GooglePlaceBaseResponse {
 /**
  * Documentation: https://developers.google.com/places/web-service/search#FindPlaceRequests
  */
-export class FindByTextSearch extends BaseSearch<FindByTextSearchRequest> implements Searchable<FindByTextSearchResponse> {
+export class FindByTextSearch
+  extends BaseSearch<FindByTextSearchRequest>
+  implements Searchable<FindByTextSearchResponse> {
   public async exec() {
     return await this.query('findplacefromtext');
   }

@@ -52,8 +52,8 @@ const whiteHousePlaceID = "ChIJGVtI4by3t4kRr51d_Qm_x58";
 
 
 Places.details({ placeid: whiteHousePlaceID })
-  .then(results => {
-    // results array of partial matches
+  .then(response => {
+    // result array of partial matches
     const { status, result } = response;
   })
   .catch(e => console.log(e));

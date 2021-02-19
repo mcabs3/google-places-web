@@ -56,8 +56,10 @@ export interface NearbySearchResponse extends GooglePlaceBaseResponse {
 export class NearbySearch
   extends BaseSearch<NearbySearchRequest>
   implements Searchable<NearbySearchResponse> {
-  public async exec() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public async exec(): Promise<any> {
     const rankby = this.get('rankby');
+    // eslint-disable-next-line no-extra-boolean-cast
     if (!!rankby) {
       if (this._params.has('radius')) {
         throw new Error('`radius` and `rankby` are present.');

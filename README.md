@@ -52,8 +52,6 @@ const whiteHousePlaceID = "ChIJGVtI4by3t4kRr51d_Qm_x58";
 
 try {
   const response = await Places.details({ placeid: whiteHousePlaceID });
-  
-  // result array of partial matches
   const { status, result } = response;
 } catch (error) {
   console.log(error);

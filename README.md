@@ -50,13 +50,14 @@ Places.autocomplete({ input: partialAddress, radius, language })
 ```javascript
 const whiteHousePlaceID = "ChIJGVtI4by3t4kRr51d_Qm_x58";
 
-
-Places.details({ placeid: whiteHousePlaceID })
-  .then(response => {
-    // result array of partial matches
-    const { status, result } = response;
-  })
-  .catch(e => console.log(e));
+try {
+  const response = await Places.details({ placeid: whiteHousePlaceID });
+  
+  // result array of partial matches
+  const { status, result } = response;
+} catch (error) {
+  console.log(error);
+}
 ```
 
 ### [Nearby Places](https://developers.google.com/places/web-service/search)

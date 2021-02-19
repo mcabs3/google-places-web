@@ -51,7 +51,7 @@ Places.autocomplete({ input: partialAddress, radius, language })
 const whiteHousePlaceID = "ChIJGVtI4by3t4kRr51d_Qm_x58";
 
 try {
-  const response = Places.details({ placeid: whiteHousePlaceID });
+  const response = await Places.details({ placeid: whiteHousePlaceID });
   const { status, result } = response;
 } catch (error) {
   console.log(error);

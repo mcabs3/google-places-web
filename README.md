@@ -36,17 +36,6 @@ npm i google-places-web -S
 ## Usage
 
 ```typescript
-import {
-  AutoCompleteSearch,
-  FindByTextSearch,
-  NearbySearch,
-  PlaceDetailsSearch,
-  QueryAutoCompleteSearch,
-  TextSearch
-} from 'google-places-web';
-```
-
-```typescript
 // ES6
 import Places from 'google-places-web';
 

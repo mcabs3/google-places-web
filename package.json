@@ -7,7 +7,7 @@
   "scripts": {
     "run:example": "ts-node -r dotenv/config",
     "dev": "tsc --watch",
-    "prepublish": "tsc",
+    "prepublish": "npm run build",
     "lint": "eslint src --ext .ts,.js",
     "lint:fix": "eslint src --ext .ts,.js --fix",
     "prepare": "npm run build",

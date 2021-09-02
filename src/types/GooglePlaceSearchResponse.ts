@@ -7,7 +7,7 @@ export type PlacesStatusCode =
   | 'UNKOWN_ERROR';
 
 interface BaseGoogleResult {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -159,6 +159,6 @@ export interface GooglePlaceBaseResponse {
   // only included if there was an error
   error_message?: string;
   debug_log?: {
-    line: any[];
+    line: unknown[];
   };
 }

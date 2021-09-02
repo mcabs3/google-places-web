@@ -1,10 +1,10 @@
-import { BaseSearch, Searchable } from './BaseSearch';
+import { BaseSearch } from './BaseSearch';
 import {
   PlacesRequest,
   PlacesTypeRequest,
   GooglePlaceBaseResponse,
   PlacesAutoCompletePrediction
-} from 'types';
+} from '../types';
 
 export interface AutoCompleteSearchRequest
   extends PlacesRequest,
@@ -39,10 +39,4 @@ export interface AutoCompleteResponse extends GooglePlaceBaseResponse {
 /**
  * Documentation: https://developers.google.com/places/web-service/autocomplete#place_autocomplete_requests
  */
-export class AutoCompleteSearch
-  extends BaseSearch<AutoCompleteSearchRequest>
-  implements Searchable<AutoCompleteResponse> {
-  public async exec() {
-    return await this.query('autocomplete');
-  }
-}
+export class AutoCompleteSearch extends BaseSearch<AutoCompleteSearchRequest> {}

@@ -6,7 +6,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
-    "baseUrl": "src",
+    // "baseUrl": "src",
     "strictNullChecks": true,
     "declaration": true,
     "declarationDir": "dist",
@@ -30,6 +30,6 @@
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
   ]
 }

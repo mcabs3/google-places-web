@@ -4,5 +4,5 @@ module.exports = {
   transform: {
     "^.+\\.tsx?$": "ts-jest"
   },
-  setupFiles: ["./src/setupTests.ts"]
+  setupFiles: ['dotenv/config', "./src/setupTests.ts"]
 };

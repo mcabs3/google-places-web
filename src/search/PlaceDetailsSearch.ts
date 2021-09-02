@@ -1,4 +1,4 @@
-import { BaseSearch, Searchable } from './BaseSearch';
+import { BaseSearch } from './BaseSearch';
 import {
   PlacesRequest,
   PlacesRegionRequest,
@@ -23,10 +23,4 @@ export interface PlaceDetailsResponse extends GooglePlaceBaseResponse {
   result: PlacesDetailsResult;
 }
 
-export class PlaceDetailsSearch
-  extends BaseSearch<PlaceDetailsSearchRequest>
-  implements Searchable<PlaceDetailsResponse> {
-  public async exec() {
-    return await this.query('details');
-  }
-}
+export class PlaceDetailsSearch extends BaseSearch<PlaceDetailsSearchRequest> {}

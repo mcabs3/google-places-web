@@ -1,5 +1,4 @@
 import Places from '../dist';
-import { performSearch } from './utils';
 
 try {
   const apiKey = process.env.PLACES_API_KEY;
@@ -8,20 +7,16 @@ try {
   }
 
   Places.apiKey = apiKey;
+  Places.debug = true;
 
   // eslint-disable-next-line no-inner-declarations
   async function run() {
     try {
-      Places.nearbysearch();
-      const response = await performSearch(
-        'Nearby Search',
-        Places.nearbysearch,
-        {
-          location: '-37.814,144.96332',
-          rankby: 'DISTANCE'
-          // cannot use radius because rankby is DISTANCE
-        }
-      );
+      const response = await Places.nearbysearch({
+        location: '-37.814,144.96332',
+        rankby: 'distance'
+        // cannot use radius because rankby is DISTANCE
+      });
 
       console.log('Example Nearby Result', response.results[0]);
     } catch (error) {

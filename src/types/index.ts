@@ -17,7 +17,7 @@ export interface IGooglePlacesConfig {
  * Internally used to pass the query parameter key/value paris
  */
 export interface GooglePlacesOptions {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -72,7 +72,7 @@ export interface BaseGooglePlacesNearbySearch extends GooglePlacesOptions {
   opennow?: boolean;
   pagetoken?: string;
   type?: string;
-  rankby?: 'PROMINENCE' | 'DISTANCE';
+  rankby?: 'prominence' | 'distance';
 }
 
 /**
@@ -82,11 +82,11 @@ export interface BaseGooglePlacesNearbySearch extends GooglePlacesOptions {
 export type GooglePlacesNearbySearchOpts = BaseGooglePlacesNearbySearch &
   (
     | {
-        rankby: 'DISTANCE';
+        rankby: 'distance';
         radius?: undefined;
       }
     | {
-        rankby?: 'PROMINENCE';
+        rankby?: 'prominence';
         radius: number;
       }
   );
@@ -104,18 +104,6 @@ export interface GooglePlacesTextSearchOpts extends GooglePlacesOptions {
   query: string;
   radius?: number;
   type?: string;
-}
-
-/**
- * Internal use for findplacesearch()
- * https://developers.google.com/maps/documentation/javascript/reference/places-service#FindPlaceFromQueryRequest
- * @deprecated
- */
-export interface GooglePlacesFindPlaceSearchOpts extends GooglePlacesOptions {
-  input: string;
-  inputtype: 'textquery' | 'phonenumber';
-  language?: string;
-  fields?: string;
 }
 
 interface BaseGoogleResult {
@@ -305,32 +293,6 @@ export type GooglePlaceTextSearchResult = Pick<
   | 'reference'
   | 'types'
 >;
-
-/**
- * @deprecated
- */
-export type GooglePlaceFindPlaceSearchResult = Pick<
-  GooglePlaceDetailsResult,
-  | 'formatted_address'
-  | 'name'
-  | 'opening_hours'
-  | 'photos'
-  | 'rating'
-  | 'user_ratings_total'
-  | 'place_id'
-  | 'icon'
-  | 'geometry'
->;
-/**
-
-/**
- * HTTP body payload for a Find Place search request
- * @deprecated
- */
-export interface GooglePlaceFindPlaceSearchResponse
-  extends GooglePlaceBaseResponse {
-  candidates: GooglePlaceFindPlaceSearchResult[];
-}
 
 /**
  * HTTP body payload for a Place Text search request

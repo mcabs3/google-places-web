@@ -1,6 +1,6 @@
 # Welcome to V2!
 
-V2 is a complete rewrite to provide better TypeScript support and infrastructure for validations with more flexibility. Google Places Web provides both base classes and a factory implementation to make it flexible and easy to use. There are breaking changes so please read through the readme below.
+V2 is a complete rewrite to provide better TypeScript support and infrastructure for validations with more flexibility. Google Places Web provides a singleton (default) and exported class to make it flexible and easy to use. There are breaking changes so please read through the readme below.
 
 # What is this?
 
@@ -14,6 +14,10 @@ A promise-based integration with [Google Places for Node](https://developers.goo
 - [Autocomplete](https://developers.google.com/places/web-service/autocomplete)
 - [Query Autocomplete](https://developers.google.com/places/web-service/query)
 - [Place Details](https://developers.google.com/places/web-service/details)
+
+### Deprecation Notice
+
+**Radar Search** and **Find Place Search** have been deprecated and removed from the library.
 
 ### TypeScript
 
@@ -44,44 +48,12 @@ import {
 
 ```typescript
 // ES6
-import { PlacesSearchFactory, NearbySearch } from 'google-places-web';
+import Places from 'google-places-web';
 
-// create your own instance of a search
-const search = new NearbySearch();
-search.setApiKey('your-api-key');
+Places.apiKey = 'your-api-key';
 
-// OR create a singleton factory to create searches reusing the api key
-const factory = new PlacesSearchFactory('your-api-key');
-const search = factory.nearbysearch();
-const search2 = factory.nearbysearch();
-```
-
-## Methods
-
-Each search is the same type of builder-like implementation. Create an instance of the search, set the desired/required parameters, and asynchronously execute the search.
-
-| Method                    | Return Type              | Description                                                                                                     |
-| ------------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| `setApiKey(key: string)`  | `self`                   | Set the API key for the search                                                                                  |
-| `set(key: string, value)` | `self`                   | Set a parameter to be included in the request                                                                   |
-| `get(key: string)`        | `any                     | undefined`                                                                                                      | Get a parameter from the building requst |
-| `remove(key: string)`     | `boolean`                | Deletes a parameter from the building requst if present, returns `true` if successful, false if not found       |
-| `getParamsAsObject()`     | `object`                 | returns an object with all of the parameters for the search                                                     |
-| `isValid()`               | `boolean`                | Returns `true` if the search has the correct parameters to initiate a search                                    |
-| `exec()`                  | `Promise<PlacesReponse>` | Performs the search based on the parameters provided asynchronously. Will throw an error if unable to complete. |
-
-## PlacesSearchFactory
-
-This factory class has been added to create a singleton use of this library. You can use this class to generate preconfigured searches. Injecting your API key into a new search. This is a familiar approach to how v1 was implemented.
-
-```typescript
-const Places = new PlacesSearchFactory('you-api-key');
-
-await Places.nearbysearch().set('radius', 500).exec();
-
-await Places.textsearch().set('location', '0,0').exec();
-
-await Places.autocomplete().set('input', 'White House').exec();
+const search = await Places.nearbysearch({...});
+const search2 = await Places.details({...});
 ```
 
 ## Running Examples
@@ -92,7 +64,7 @@ Make sure you have the dependencies installed (`yarn`) and have built it with `y
 
 ```shell
 # uses the PLACES_API_KEY from .env file and is required
-> yarn run:example examples/whatever-example.ts
+> yarn run:example examples/{search}-example.ts
 ```
 
 ## Troubleshooting/Contributing
@@ -103,6 +75,7 @@ Feel free to file issues as you see fit, and always looking for collaborators to
 
 ## Errors
 
+- `INVALID_REQUEST` - Google is respondig saying that your parameters provided is invalid.
 - `Invalid API Key` - The instance of the `GooglePlaces` object does not have a valid API key from Google. Make sure you are either using `import Places from...` or `import {GooglePlaces} from...`. `GooglePlaces` is the base class so you would need to make an instance of it first.
 - `STATUS_MESSAGE` - Google responds with HTTP 200 but JSON contains an "error". This is parsed from the Google API response, ex. `ZERO_RESULTS`
 - `Missing required params: [<PARAM1>, <PARAM2>]` - Required params PARAM1 & PARAM2 are `undefined` or `null`

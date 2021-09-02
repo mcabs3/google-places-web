@@ -40,7 +40,7 @@ describe('API', () => {
       });
     });
     it('should return the new configuration if rankby is distance', () => {
-      expect(API.NEARBY_SEARCH({ rankby: 'DISTANCE' })).toEqual({
+      expect(API.NEARBY_SEARCH({ rankby: 'distance' })).toEqual({
         optionalKeys: [
           'bounds',
           'keyword',

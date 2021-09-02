@@ -1,4 +1,4 @@
-import { BaseSearch, Searchable } from './BaseSearch';
+import { BaseSearch } from './BaseSearch';
 import {
   PlacesPageTokenRequest,
   PlacesRequest,
@@ -53,11 +53,8 @@ export interface NearbySearchResponse extends GooglePlaceBaseResponse {
 /**
  * Documentation: https://developers.google.com/places/web-service/search#PlaceSearchRequests
  */
-export class NearbySearch
-  extends BaseSearch<NearbySearchRequest>
-  implements Searchable<NearbySearchResponse> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async exec(): Promise<any> {
+export class NearbySearch extends BaseSearch<NearbySearchRequest> {
+  isValid(): boolean {
     const rankby = this.get('rankby');
     // eslint-disable-next-line no-extra-boolean-cast
     if (!!rankby) {
@@ -70,6 +67,6 @@ export class NearbySearch
       console.log('pagetoken provided: params will be ignored');
     }
 
-    return await this.query('nearbysearch');
+    return true;
   }
 }

@@ -1,4 +1,4 @@
-import { Searchable, BaseSearch } from './BaseSearch';
+import { BaseSearch } from './BaseSearch';
 import {
   GooglePlaceBaseResponse,
   PlacesSearchResult,
@@ -62,13 +62,12 @@ export interface TextSearchResponse extends GooglePlaceBaseResponse {
 /**
  * Documentation: https://developers.google.com/places/web-service/search#TextSearchRequests
  */
-export class TextSearch
-  extends BaseSearch<TextSearchRequest>
-  implements Searchable<TextSearchResponse> {
-  public async exec() {
+export class TextSearch extends BaseSearch<TextSearchRequest> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public isValid(): boolean {
     if (this._params.has('location') && !this._params.has('radius')) {
       throw new Error('radius is required when location is provided');
     }
-    return await this.query('textsearch');
+    return true;
   }
 }

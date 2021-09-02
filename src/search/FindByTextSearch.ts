@@ -1,4 +1,4 @@
-import { Searchable, BaseSearch } from './BaseSearch';
+import { BaseSearch } from './BaseSearch';
 import {
   PlacesRequest,
   PlacesFieldsRequest,
@@ -28,10 +28,4 @@ export interface FindByTextSearchResponse extends GooglePlaceBaseResponse {
 /**
  * Documentation: https://developers.google.com/places/web-service/search#FindPlaceRequests
  */
-export class FindByTextSearch
-  extends BaseSearch<FindByTextSearchRequest>
-  implements Searchable<FindByTextSearchResponse> {
-  public async exec() {
-    return await this.query('findplacefromtext');
-  }
-}
+export class FindByTextSearch extends BaseSearch<FindByTextSearchRequest> {}

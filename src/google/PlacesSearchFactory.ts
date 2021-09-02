@@ -6,45 +6,27 @@ import { AutoCompleteSearch } from '../search/AutoCompleteSearch';
 import { QueryAutoCompleteSearch } from '../search/QueryAutoCompleteSearch';
 
 export class PlacesSearchFactory {
-  private _api: string;
-
-  constructor(apiKey: string) {
-    this._api = apiKey;
-  }
-
   public nearbysearch(): NearbySearch {
-    const search = new NearbySearch();
-    search.setApiKey(this._api);
-    return search;
+    return new NearbySearch();
   }
 
   public findbytextsearch(): FindByTextSearch {
-    const search = new FindByTextSearch();
-    search.setApiKey(this._api);
-    return search;
+    return new FindByTextSearch();
   }
 
   public textsearch(): TextSearch {
-    const search = new TextSearch();
-    search.setApiKey(this._api);
-    return search;
+    return new TextSearch();
   }
 
   public detailsearch(): PlaceDetailsSearch {
-    const search = new PlaceDetailsSearch();
-    search.setApiKey(this._api);
-    return search;
+    return new PlaceDetailsSearch();
   }
 
   public autocomplete(): AutoCompleteSearch {
-    const search = new AutoCompleteSearch();
-    search.setApiKey(this._api);
-    return search;
+    return new AutoCompleteSearch();
   }
 
   public queryautocomplete(): QueryAutoCompleteSearch {
-    const search = new QueryAutoCompleteSearch();
-    search.setApiKey(this._api);
-    return search;
+    return new QueryAutoCompleteSearch();
   }
 }

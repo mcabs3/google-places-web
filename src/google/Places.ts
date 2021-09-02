@@ -11,11 +11,16 @@ import {
   GooglePlaceNearbySearchResponse,
   GooglePlaceTextSearchResponse,
   GooglePlacesTextSearchOpts,
-  GooglePlacesOptions,
-  GooglePlacesFindPlaceSearchOpts,
-  GooglePlaceFindPlaceSearchResponse
-} from 'types';
-import { GooglePlaceBaseResponse } from 'types';
+  GooglePlacesOptions
+} from '../types';
+import {
+  AutoCompleteSearchRequest,
+  BaseSearch,
+  FindByTextSearchRequest,
+  NearbySearchRequest,
+  PlaceDetailsSearchRequest,
+  TextSearchRequest
+} from '../search';
 
 export const GOOGLE_MAPS_API_TARGET =
   'https://maps.googleapis.com/maps/api/place';
@@ -24,9 +29,6 @@ interface GoogleResponse<T> extends superagent.Response {
   body: T;
 }
 
-/**
- * @deprecated
- */
 export class GooglePlaces {
   private _apiKey?: string;
   private _debug = false;
@@ -39,42 +41,71 @@ export class GooglePlaces {
     this._query = this._query.bind(this);
   }
 
+  async query(
+    type: 'queryautocomplete',
+    opts: AutoCompleteSearchRequest
+  ): Promise<superagent.Response>;
+  async query(
+    type: 'nearbysearch',
+    opts: NearbySearchRequest
+  ): Promise<superagent.Response>;
+  async query(
+    type: 'textsearch',
+    opts: TextSearchRequest
+  ): Promise<superagent.Response>;
+  async query(
+    type: 'details',
+    opts: PlaceDetailsSearchRequest
+  ): Promise<superagent.Response>;
+  async query(
+    type: 'findplacefromtext',
+    opts: FindByTextSearchRequest
+  ): Promise<superagent.Response>;
+  async query(type: never, opts: never): Promise<superagent.Response> {
+    if (!opts || Object.keys(opts).length === 0) {
+      throw new Error('no parameters');
+    }
+    const search = new BaseSearch(opts);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return await this._query(type, search.toRequestJSON() as any);
+  }
+
   /**
    * Retrieves a list of predictions of a partial address
    */
-  public autocomplete = async (
+  public async autocomplete(
     opts?: GooglePlacesQueryAutocompleteOpts
-  ): Promise<GooglePlaceAutocompleteResponse> => {
+  ): Promise<GooglePlaceAutocompleteResponse> {
     const config = API.AUTOCOMPLETE(opts);
     const params = this._permitParams(config, opts);
     const res = await this._query<
       GoogleResponse<GooglePlaceAutocompleteResponse>
     >(config.path, params);
     return res.body;
-  };
+  }
 
   /**
    * Retrieves a list of predictions of a partial search
    *
    * ex. "Pizza in Chicago"
    */
-  public queryautocomplete = async (
+  public async queryautocomplete(
     opts?: GooglePlacesQueryAutocompleteOpts
-  ): Promise<GooglePlaceQueryAutocompleteResponse> => {
+  ): Promise<GooglePlaceQueryAutocompleteResponse> {
     const config = API.AUTOCOMPLETE(opts);
     const params = this._permitParams(config, opts);
     const res = await this._query<
       GoogleResponse<GooglePlaceQueryAutocompleteResponse>
     >(config.path, params);
     return res.body;
-  };
+  }
 
   /**
    * Retrieve the details of a Google Place based on the Place ID
    */
-  public details = async (
+  public async details(
     opts?: GooglePlacesDetailsOpts
-  ): Promise<GooglePlaceDetailsResponse> => {
+  ): Promise<GooglePlaceDetailsResponse> {
     const config = API.DETAILS(opts);
     const params = this._permitParams(config, opts);
     const res = await this._query<GoogleResponse<GooglePlaceDetailsResponse>>(
@@ -82,14 +113,14 @@ export class GooglePlaces {
       params
     );
     return res.body;
-  };
+  }
 
   /**
    * Google API Nearby Search
    */
-  public nearbysearch = async (
+  public async nearbysearch(
     opts?: GooglePlacesNearbySearchOpts
-  ): Promise<GooglePlaceNearbySearchResponse> => {
+  ): Promise<GooglePlaceNearbySearchResponse> {
     if (opts && opts.rankby && opts.rankby.toUpperCase() === 'DISTANCE') {
       // Remove radius option if "rankBy" is set to "DISTANCE"
       opts.radius = undefined;
@@ -101,55 +132,21 @@ export class GooglePlaces {
       GoogleResponse<GooglePlaceNearbySearchResponse>
     >(config.path, params);
     return res.body;
-  };
-
-  /**
-   * Google API Find Place Search
-   * @deprecated
-   */
-  public findPlaceSearch = async (
-    opts?: GooglePlacesFindPlaceSearchOpts
-  ): Promise<GooglePlaceFindPlaceSearchResponse> => {
-    const config = API.FIND_PLACE_SEARCH(opts);
-    const params = this._permitParams(config, opts);
-    const res = await this._query<
-      GoogleResponse<GooglePlaceFindPlaceSearchResponse>
-    >(config.path, params);
-    return res.body;
-  };
+  }
 
   /**
    * Google API Text Search
    */
-  public textsearch = async (
+  public async textsearch(
     opts?: GooglePlacesTextSearchOpts
-  ): Promise<GooglePlaceTextSearchResponse> => {
+  ): Promise<GooglePlaceTextSearchResponse> {
     const config = API.TEXT_SEARCH(opts);
     const params = this._permitParams(config, opts);
     const res = await this._query<
       GoogleResponse<GooglePlaceTextSearchResponse>
     >(config.path, params);
     return res.body;
-  };
-
-  /**
-   * Google API Radar Search
-   * @deprecated
-   */
-  public radarsearch = async (
-    opts: GooglePlacesOptions = {}
-  ): Promise<GooglePlaceBaseResponse> => {
-    const config = API.RADAR_SEARCH(opts);
-    const params: Record<string, unknown> = this._permitParams(config, opts);
-
-    if (!params.name && !params.keyword && !params.type) {
-      throw new Error('Missing required parameter: [keyword, name, or type]');
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const res = await this._query<GoogleResponse<any>>(config.path, params);
-    return res.body;
-  };
+  }
 
   /**
    * Set the Google API Key from the Developer Console
@@ -174,14 +171,14 @@ export class GooglePlaces {
     this._debug = isDebug;
   }
 
-  private _googleApiRequest = async (
+  private async _googleApiRequest(
     url: string,
     params: Record<string, unknown>
-  ) => {
+  ) {
     const target = `${GOOGLE_MAPS_API_TARGET}${url}`;
     this._log(`GPW:REQ ${target}`, JSON.stringify({ ...params }));
     return await superagent.get(target).query({ key: this.apiKey, ...params });
-  };
+  }
 
   /**
    * Parse through a params object creating URI Components
@@ -205,7 +202,7 @@ export class GooglePlaces {
     // Filter required params
     const filteredRequiredParams = requiredKeys.reduce(
       (p: GooglePlacesOptions, key: string) => {
-        const param: string = params[key];
+        const param: string = params[key] as string;
         if (param) {
           p[key] = param;
         } else {
@@ -260,6 +257,8 @@ export class GooglePlaces {
     } else if (!params) {
       throw new Error('Missing params');
     }
+
+    params.key = this.apiKey;
 
     const response: superagent.Response = await this._googleApiRequest(
       `/${path}/json`,

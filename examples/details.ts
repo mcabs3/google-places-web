@@ -1,5 +1,5 @@
-import Places, { GooglePlaceDetailsResponse } from '../dist';
-import { getApiKey, performSearch } from './utils';
+import Places from '../dist';
+import { getApiKey } from './utils';
 
 Places.apiKey = getApiKey();
 
@@ -7,13 +7,9 @@ Places.apiKey = getApiKey();
 async function run() {
   try {
     const whiteHousePlaceID = 'ChIJGVtI4by3t4kRr51d_Qm_x58';
-    const response: GooglePlaceDetailsResponse = await performSearch(
-      'Places Details',
-      Places.details,
-      { placeid: whiteHousePlaceID }
-    );
+    const response = await Places.details({ placeid: whiteHousePlaceID });
 
-    console.log('Details Result', response.result);
+    console.log(response.result);
   } catch (error) {
     console.log('Error', error);
   }

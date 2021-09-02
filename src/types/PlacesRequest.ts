@@ -1,8 +1,7 @@
-import { PlacesType } from 'types';
+import { PlacesType } from '../types';
 
-export interface PlacesRequest {
-  key: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface PlacesRequest {}
 
 export interface PlacesPageTokenRequest {
   pagetoken?: string;

@@ -107,7 +107,7 @@ export interface GooglePlacesTextSearchOpts extends GooglePlacesOptions {
 }
 
 interface BaseGoogleResult {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**

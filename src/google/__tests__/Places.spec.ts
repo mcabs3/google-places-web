@@ -23,7 +23,7 @@ describe('API Key', () => {
 
     try {
       Places.apiKey = key3 as any;
-    } catch (error) {
+    } catch (error: any) {
       expect(Places.apiKey).toBe(key2);
       expect(error.message).toMatch('Invalid API Key');
     }
@@ -46,7 +46,7 @@ describe('Details', () => {
     expect.assertions(1);
     try {
       await Places.details();
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toMatch('No parameters provided');
     }
   });
@@ -56,7 +56,7 @@ describe('Details', () => {
     expect.assertions(1);
     try {
       await Places.details(null as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toMatch('No parameters provided');
     }
   });
@@ -81,7 +81,7 @@ describe('Autocomplete', () => {
     expect.assertions(1);
     try {
       await Places.autocomplete();
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toMatch('No parameters provided');
     }
   });
@@ -91,7 +91,7 @@ describe('Autocomplete', () => {
     expect.assertions(1);
     try {
       await Places.autocomplete(null as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toMatch('No parameters provided');
     }
   });
@@ -115,7 +115,7 @@ describe('NearbySearch', () => {
     expect.assertions(1);
     try {
       await Places.nearbysearch();
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toMatch('No parameters provided');
     }
   });
@@ -127,7 +127,7 @@ describe('NearbySearch', () => {
       await Places.nearbysearch({
         location: '-37.814,144.96332'
       } as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toMatch('Missing required params: [radius]');
     }
   });
@@ -142,7 +142,7 @@ describe('NearbySearch', () => {
       });
 
       expect(response.results).toBeDefined();
-    } catch (error) {
+    } catch (error: any) {
       fail();
     }
   });
@@ -153,7 +153,7 @@ describe('Query Autocomplete', () => {
     Places.apiKey = MASTER_KEY;
     try {
       await Places.queryautocomplete({ input: '' } as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toMatch('Missing required params: [input]');
     }
   });
@@ -170,7 +170,7 @@ describe('textsearch', () => {
   it('should throw an error for missing query param', async () => {
     try {
       await Places.textsearch({ radius: 100 } as any);
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toMatch('Missing required params: [query]');
     }
   });
@@ -182,7 +182,7 @@ describe('textsearch', () => {
         query: 'restaurants near chicago'
       });
       expect(response.results).toBeDefined();
-    } catch (error) {
+    } catch (error: any) {
       fail();
     }
   });

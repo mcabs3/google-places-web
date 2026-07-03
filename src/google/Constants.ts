@@ -110,7 +110,8 @@ export const API: ApiMap = {
       'opennow',
       'radius',
       'type',
-      'pagetoken'
+      'pagetoken',
+      'region'
     ],
     path: 'textsearch',
     requiredKeys: ['query']

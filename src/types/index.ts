@@ -104,6 +104,7 @@ export interface GooglePlacesTextSearchOpts extends GooglePlacesOptions {
   query: string;
   radius?: number;
   type?: string;
+  region?: string;
 }
 
 interface BaseGoogleResult {

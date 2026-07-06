@@ -12,6 +12,7 @@
     "declarationDir": "dist",
     "keyofStringsOnly": true,
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "noUnusedLocals": true,
     "target": "es6",
     "sourceMap": true,

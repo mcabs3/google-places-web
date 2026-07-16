@@ -23,7 +23,7 @@
     "rootDir": "src",
     "types": [
       "node",
-      "jest"
+      "vitest/globals"
     ]
   },
   "include": [

@@ -143,7 +143,7 @@ describe('NearbySearch', () => {
 
       expect(response.results).toBeDefined();
     } catch (error: any) {
-      fail();
+      expect.fail('nearbysearch should not throw');
     }
   });
 });
@@ -183,7 +183,7 @@ describe('textsearch', () => {
       });
       expect(response.results).toBeDefined();
     } catch (error: any) {
-      fail();
+      expect.fail('textsearch should not throw');
     }
   });
 });
